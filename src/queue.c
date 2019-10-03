@@ -2,7 +2,10 @@
 
 Queue *inique(void) {
 	Queue *queue = malloc(sizeof(Queue));
-	assert(queue);
+	if (queue == NULL) {
+		perror("inique");
+		exit(EXIT_FAILURE);
+	}
 
 	queue->head = NULL;
 	queue->tail = NULL;
@@ -11,9 +14,22 @@ Queue *inique(void) {
 	return queue;
 }
 
+Data gethead(Queue *queue) {
+	if (quEmpty(queue)) {
+		perror("gethead");
+		free(queue);
+		exit(EXIT_FAILURE);
+	}
+
+	Data data = queue->head->data;
+	return data;
+}
+
 void prtqeue(Queue *queue) {
-	if (quEmpty(queue))
+	if (quEmpty(queue)) {
+		perror("prtqeue");
 		return;
+	}
 
 	int line = 0;
 	Node *node = queue->head;
@@ -33,7 +49,11 @@ void prtqeue(Queue *queue) {
 
 void enqueue(Queue *queue, Data data) {
 	Node *node = malloc(sizeof(Node));
-	assert(node);
+	if (node == NULL) {
+		perror("enqueue");
+		queFree(queue);
+		exit(EXIT_FAILURE);
+	}
 
 	node->data = data;
 	node->next = NULL;
@@ -50,8 +70,11 @@ void enqueue(Queue *queue, Data data) {
 }
 
 void dequeue(Queue *queue) {
-	if (quEmpty(queue))
-		error(1,1,"Fila vazia");
+	if (quEmpty(queue)) {
+		perror("dequeue");
+		free(queue);
+		exit(EXIT_FAILURE);
+	}
 
 	Node *node = queue->head;
 
@@ -64,14 +87,19 @@ void dequeue(Queue *queue) {
 	free(node);
 }
 
-Data gethead(Queue *queue) {
-	if (quEmpty(queue))
-		error(1,1,"Fila vazia");
+void queFree(Queue *queue) {
 
-	Data data = queue->head->data;
-	return data;
+	while (!quEmpty(queue)) {
+		dequeue(queue);
+	}
+
+	free(queue);
 }
 
 bool quEmpty(Queue *queue) {
-	return queue->head == NULL;
+	if (queue->head == NULL) {
+		errno = EFAULT;
+		return true;
+	}
+	return false;
 }

@@ -3,8 +3,11 @@
 void readlog(char *file, Queue *queue) {
 
 	FILE *fp = fopen(file,"r");
-	if (!fp)
-		error(1,2,file);
+	if (fp == NULL) {
+		perror("readlog");
+		free(queue);
+		exit(EXIT_FAILURE);
+	}
 
 	char *line = NULL;
 	size_t lcount = 1;
@@ -12,33 +15,30 @@ void readlog(char *file, Queue *queue) {
 	ssize_t read;
 
 	Data data;
-	bool valid = true;
 
 	while ((read = getline(&line,&len,fp)) != -1) {
 		sscanf(line,"%x %c",&data.addr,&data.rw);
-		valid = valdata(data,lcount);
-		enqueue(queue,data);
+		if (valdata(data,line,lcount))
+			enqueue(queue,data);
 		lcount++;
-	}
-
-	if (!valid)
-		error(1,5,file);
+	};
 
 	free(line);
 	fclose(fp);
 }
 
-bool valdata(Data data, size_t line) {
-	bool valid;
+bool valdata(Data data, char *line, size_t lcount) {
+	line[strcspn(line, "\n")] = 0;
 
-	if (data.addr == UINT_MAX) {
-		printf("%ld: %s%08x%s %c\n",line,CRED,data.addr,CRSET,data.rw);
-		valid = false;
+	if (data.rw != 'R' && data.rw != 'W') {
+		printf("%ld: %s%s%s",lcount,CRED,line,CRSET);
+		printf(" \u27A1 erro na indicacao do acesso\n");
+		return false;
+	} else if (strlen(line) > 10) {
+		printf("%ld: %s%s%s",lcount,CRED,line,CRSET);
+		printf(" \u27A1 erro de leitura\n");
+		return false;
 	}
-/* 	else if (data.rw != 'R' || data.rw != 'W') {
-		printf("%ld: %08x %s%c%s\n",line,data.addr,CRED,data.rw,CRSET);
-		valid = false;
-	} */
 
-	return valid;
+	return true;
 }

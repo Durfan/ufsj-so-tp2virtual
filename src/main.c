@@ -2,11 +2,16 @@
 
 int main(void) {
 
-	char *file = "./logs/teste.log";
+	char *file = "./logs/testfdfde.log";
 	Queue *queue = inique();
 
+	printf("Executando o simulador...\n");
+	printf("Arquivo de entrada: %s\n", file);
 	readlog(file,queue);
+
 	prtqeue(queue);
 
-	return 0;
+	queFree(queue);
+
+	return EXIT_SUCCESS;
 }

@@ -2,6 +2,6 @@
 #define _LOGREAD_H
 
 void readlog(char *file, Queue *queue);
-bool valdata(Data data, size_t line);
+bool valdata(Data data, char *line, size_t lcount);
 
 #endif // _LOGREAD_H

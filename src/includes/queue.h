@@ -18,10 +18,11 @@ typedef struct queue_t {
 } Queue;
 
 Queue *inique(void);
+Data gethead(Queue *queue);
 void prtqeue(Queue *queue);
 void enqueue(Queue *queue, Data data);
 void dequeue(Queue *queue);
-Data gethead(Queue *queue);
+void queFree(Queue *queue);
 bool quEmpty(Queue *queue);
 
 #endif // _QUEUE_H

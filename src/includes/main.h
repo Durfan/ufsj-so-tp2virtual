@@ -8,9 +8,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <stdbool.h>
-#include <limits.h>
-#include <error.h>
+#include <errno.h>
 #include <assert.h>
 
 #include "queue.h"
