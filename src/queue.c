@@ -2,10 +2,8 @@
 
 Queue *inique(void) {
 	Queue *queue = malloc(sizeof(Queue));
-	if (queue == NULL) {
-		perror("inique");
-		exit(EXIT_FAILURE);
-	}
+	if (queue == NULL)
+		error(EXIT_FAILURE,errno,"inique");
 
 	queue->head = NULL;
 	queue->tail = NULL;
@@ -16,9 +14,8 @@ Queue *inique(void) {
 
 Data gethead(Queue *queue) {
 	if (quEmpty(queue)) {
-		perror("gethead");
-		free(queue);
-		exit(EXIT_FAILURE);
+		queFree(queue);
+		error(EXIT_FAILURE,ENODATA,"gethead");
 	}
 
 	Data data = queue->head->data;
@@ -27,7 +24,7 @@ Data gethead(Queue *queue) {
 
 void prtqeue(Queue *queue) {
 	if (quEmpty(queue)) {
-		perror("prtqeue");
+		error(0,ENODATA,"prtqeue");
 		return;
 	}
 
@@ -50,9 +47,8 @@ void prtqeue(Queue *queue) {
 void enqueue(Queue *queue, Data data) {
 	Node *node = malloc(sizeof(Node));
 	if (node == NULL) {
-		perror("enqueue");
 		queFree(queue);
-		exit(EXIT_FAILURE);
+		error(EXIT_FAILURE,errno,"enqueue");
 	}
 
 	node->data = data;
@@ -71,9 +67,8 @@ void enqueue(Queue *queue, Data data) {
 
 void dequeue(Queue *queue) {
 	if (quEmpty(queue)) {
-		perror("dequeue");
-		free(queue);
-		exit(EXIT_FAILURE);
+		error(0,ENODATA,"dequeue");
+		return;
 	}
 
 	Node *node = queue->head;
@@ -96,10 +91,6 @@ void queFree(Queue *queue) {
 	free(queue);
 }
 
-bool quEmpty(Queue *queue) {
-	if (queue->head == NULL) {
-		errno = EFAULT;
-		return true;
-	}
-	return false;
+int quEmpty(Queue *queue) {
+	return queue->head == NULL;
 }

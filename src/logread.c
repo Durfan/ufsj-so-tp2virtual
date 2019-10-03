@@ -4,9 +4,8 @@ void readlog(char *file, Queue *queue) {
 
 	FILE *fp = fopen(file,"r");
 	if (fp == NULL) {
-		perror("readlog");
 		free(queue);
-		exit(EXIT_FAILURE);
+		error(EXIT_FAILURE,errno,"readlog");
 	}
 
 	char *line = NULL;

@@ -11,6 +11,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <errno.h>
+#include <error.h>
 #include <assert.h>
 
 #include "queue.h"
