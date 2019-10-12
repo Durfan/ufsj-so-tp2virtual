@@ -8,12 +8,10 @@ int countLN(char *file) {
 	}
 
 	int lines = 0;
-
 	while (EOF != (fscanf(fp, "%*[^\n]"), fscanf(fp,"%*c")))
 		++lines;
 
 	fclose(fp);
-
 	return lines;
 }
 
@@ -24,14 +22,14 @@ void readlog(char *file, Registro *registro) {
 		exit(EXIT_FAILURE);
 	}
 
+	int i = 0;
 	char *line = NULL;
 	size_t len = 0;
 	ssize_t read;
 
-	int i = 0;
 	Access *access = registro->access;
 	while ((read = getline(&line,&len,fp)) != -1) {
-		sscanf(line,"%x %c",&access[i].addr,&access[i].rw);
+		sscanf(line,"%x %c", &access[i].addr, &access[i].rw);
 		i++;
 	};
 
