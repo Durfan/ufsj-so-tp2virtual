@@ -8,7 +8,8 @@ Registro *iniQueue(int naccess) {
 	}
 
 	registro->naccess = naccess;
-	registro->access = malloc(naccess * sizeof(Access));
+	registro->alocmem = naccess * sizeof(Access);
+	registro->access = malloc(registro->alocmem);
 	if (registro->access == NULL) {
 		perror(PROGRAM);
 		exit(EXIT_FAILURE);
@@ -21,18 +22,16 @@ void prtReg(Registro *registro) {
 	int barran = 0;
 	Access *access = registro->access;
 	for (int i=0; i < registro->naccess; i++) {
-
-		if (!barran)
-			printf(" \u2502");
-
-		printf(" %08x %c \u2502", access[i].addr, access[i].rw);
+		printf(" %08x %c", access[i].addr, access[i].rw);
 		barran++;
-
-		if (barran > 4) {
+		if (barran > 5) {
 			printf("\n");
 			barran = 0;
 		}
+		else
+			printf(" \u2502");
 	}
+	printf("\n");
 }
 
 void clrReg(Registro *registro) {

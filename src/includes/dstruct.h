@@ -8,6 +8,7 @@ typedef struct access_t {
 
 typedef struct registro_t {
 	int naccess;
+	size_t alocmem;
 	Access *access;
 } Registro;
 

@@ -13,6 +13,7 @@ int main(void) {
 
 	#ifdef DEBUG
 	prtReg(registro);
+	printf("Memoria usada: %ld Kib\n", registro->alocmem/128);
 	#endif
 
 	clrReg(registro);
