@@ -62,12 +62,13 @@ void setCfg(char **argv) {
 	g_config.file = argv[2];
 	g_config.pagsize = pagsize << 0x00A;
 	g_config.memsize = memsize << 0x00A;
+	g_config.s = getdeloc();
 }
 
 int valSize(int val, int min, int max) {
 	if (powrOf2(val) == 0) {
 		printf(PROGRAM": tam(%d): Argumento invalido\n", val);
-		printf("validos: tam(x) = log2 n | ");
+		printf("validos: tam(x) = log\u2082n | ");
 		printf("%d \u2265 tam(x) \u2264 %d\n", min, max);
 		exit(EXIT_FAILURE);
 	}

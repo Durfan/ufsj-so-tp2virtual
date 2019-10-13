@@ -18,6 +18,7 @@ struct {
 	char *file;
 	unsigned pagsize;
 	unsigned memsize;
+	unsigned s;
 } g_config;
 
 typedef struct access_t {

@@ -17,5 +17,6 @@
 
 #include "dstruct.h"
 #include "logread.h"
+#include "table.h"
 
 #endif // _MAIN_H

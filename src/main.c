@@ -26,6 +26,8 @@ int main(int argc, char **argv) {
 
 	#ifdef DEBUG
 	prtReg(registro);
+	prtAddr(registro);
+	printf("Deslocamento 's': %d\n", g_config.s);
 	printf("Memoria usada: %ld Kib\n", registro->alocmem/128);
 	#endif
 
