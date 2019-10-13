@@ -25,13 +25,13 @@ void prtReg(Registro *registro) {
 		printf(" %08x %c", access[i].addr, access[i].rw);
 		barran++;
 		if (barran > 5) {
-			printf("\n");
+			putchar(0x0A);
 			barran = 0;
 		}
 		else
 			printf(" \u2502");
 	}
-	printf("\n");
+	putchar(0x0A);
 }
 
 void clrReg(Registro *registro) {
