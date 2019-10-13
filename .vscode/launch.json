@@ -10,7 +10,7 @@
 		"type": "cppdbg",
 		"request": "launch",
 		"program": "${workspaceFolder}/tp2virtual",
-		"args": [],
+		"args": ["lru","./logs/matriz.log","4","128"],
 		"stopAtEntry": false,
 		"cwd": "${workspaceFolder}",
 		"environment": [],
