@@ -4,7 +4,12 @@ Subalg str2enum(const char *str) {
 	for (int i=0; i < (int)(sizeof(g_polstr)/sizeof(g_polstr[0])); ++i)
 		if (strcmp (str,g_polstr[i].str) == 0)
 			return g_polstr[i].val;
-	puts("Politica de substituicao invalida.");
+	printf(PROGRAM": Politica de substituicao invalida\n");
+	puts("USO: ./"PROGRAM" [polsub] [arquivo] [pagsize] [memsize]");
+	printf("[polsub]: ");
+	for (int i=0; i < (int)(sizeof(g_polstr)/sizeof(g_polstr[0])); ++i)
+		printf("%s ", g_polstr[i].str);
+	putchar(0x0A);
 	exit(EXIT_FAILURE);
 }
 

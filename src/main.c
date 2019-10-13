@@ -2,7 +2,13 @@
 
 int main(int argc, char **argv) {
 
-	setlocale(LC_ALL,NULL);
+	setlocale(LC_ALL,"");
+
+	if (argc != 5) {
+		printf(PROGRAM": %s\n", strerror(EINVAL));
+		puts("USO: ./"PROGRAM" [polsub] [arquivo] [pagsize] [memsize]");
+		exit(EXIT_FAILURE);
+	}
 
 	g_config.salg = str2enum(argv[1]);
 	g_config.file = argv[2];
