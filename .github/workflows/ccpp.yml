@@ -13,3 +13,5 @@ jobs:
       run: make
     - name: tp2virtual
       run: ./tp2virtual lru ./logs/matriz.log 4 128
+    - name: make clean
+      run: make clean
