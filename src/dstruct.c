@@ -52,14 +52,28 @@ void clrReg(Registro *registro) {
 	free(registro);
 }
 
+void setCfg(char **argv) {
+	int pagsize = atoi(argv[3]);
+	valSize(pagsize,2,64);
+	int memsize = atoi(argv[4]);
+	valSize(memsize,128,16384);
+
+	g_config.salg = str2enum(argv[1]);
+	g_config.file = argv[2];
+	g_config.pagsize = pagsize << 0x00A;
+	g_config.memsize = memsize << 0x00A;
+}
+
 int valSize(int val, int min, int max) {
 	if (powrOf2(val) == 0) {
-		printf(PROGRAM": '%d' Tamanho invalido\n", val);
+		printf(PROGRAM": %d: Tamanho invalido da ", val);
+		printf("%s\n", min == 2 ? "pagina":"memoria");
 		puts("Tamanhos validos: 2^x | x > 0");
 		exit(EXIT_FAILURE);
 	}
 	else if (val < min || val > max) {
-		printf(PROGRAM": '%d' Tamanho invalido\n", val);
+		printf(PROGRAM": %d: Tamanho invalido da ", val);
+		printf("%s\n", min == 2 ? "pagina":"memoria");
 		printf("Tamanhos validos: x | x >= %d, x <= %d\n", min, max);
 		exit(EXIT_FAILURE);
 	}

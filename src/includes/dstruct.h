@@ -35,6 +35,7 @@ Subalg str2enum(const char *str);
 Registro *iniQueue(int naccess);
 void prtReg(Registro *registro);
 void clrReg(Registro *registro);
+void setCfg(char **argv);
 int valSize(int val, int min, int max);
 int powrOf2(int val);
 
