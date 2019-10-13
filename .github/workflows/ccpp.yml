@@ -1,0 +1,14 @@
+name: C/C++ CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: make
+      run: make
+    - name: tp2virtual
+      run: ./tp2virtual lru ./logs/matriz.log 4 128
