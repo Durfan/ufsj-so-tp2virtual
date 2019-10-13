@@ -52,6 +52,20 @@ void clrReg(Registro *registro) {
 	free(registro);
 }
 
-int powerOf2(int x) {
-	return x && !(x & (x - 1));
+int valSize(int val, int min, int max) {
+	if (powrOf2(val) == 0) {
+		printf(PROGRAM": '%d' Tamanho invalido\n", val);
+		puts("Tamanhos validos: 2^x | x > 0");
+		exit(EXIT_FAILURE);
+	}
+	else if (val < min || val > max) {
+		printf(PROGRAM": '%d' Tamanho invalido\n", val);
+		printf("Tamanhos validos: x | x >= %d, x <= %d\n", min, max);
+		exit(EXIT_FAILURE);
+	}
+	return 0;
+}
+
+int powrOf2(int val) {
+	return val && !(val & (val - 1));
 }

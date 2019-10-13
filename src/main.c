@@ -10,10 +10,15 @@ int main(int argc, char **argv) {
 		exit(EXIT_FAILURE);
 	}
 
+	int pagsize = atoi(argv[3]);
+	valSize(pagsize,2,64);
+	int memsize = atoi(argv[4]);
+	valSize(memsize,128,16384);
+
 	g_config.salg = str2enum(argv[1]);
 	g_config.file = argv[2];
-	g_config.pagsize = atoi(argv[3]) << 0x00A;
-	g_config.memsize = atoi(argv[4]) << 0x00A;
+	g_config.pagsize = pagsize << 0x00A;
+	g_config.memsize = memsize << 0x00A;
 
 	int naccess = countLN();
 	Registro *registro = iniQueue(naccess);
