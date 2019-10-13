@@ -22,7 +22,7 @@ make clean # remover binario
 
 ### Formato de arquivo log
 
-Cada linha contém um endereço de memória, seguido das letras R ou W, indicando um acesso de leitura ou escrita, respectivamente. Exemplo: 
+Cada linha contém um endereço de memória de 32 bits, seguido das letras R ou W, indicando um acesso de leitura ou escrita, respectivamente. Exemplo: 
 
 ``` text
 0785db58 W
