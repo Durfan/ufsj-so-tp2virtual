@@ -1,7 +1,7 @@
 #include "./includes/main.h"
 
-int countLN(char *file) {
-	FILE *fp = fopen(file,"r");
+int countLN(void) {
+	FILE *fp = fopen(g_config.file,"r");
 	if (fp == NULL) {
 		perror(PROGRAM);
 		exit(EXIT_FAILURE);
@@ -15,8 +15,8 @@ int countLN(char *file) {
 	return lines;
 }
 
-void readlog(char *file, Registro *registro) {
-	FILE *fp = fopen(file,"r");
+void readlog(Registro *registro) {
+	FILE *fp = fopen(g_config.file,"r");
 	if (fp == NULL) {
 		perror(PROGRAM);
 		exit(EXIT_FAILURE);
