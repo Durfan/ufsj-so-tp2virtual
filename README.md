@@ -14,10 +14,10 @@ make clean # remover binario
 
 ``` bash
 ./tp2virtual [polsub] [arquivo] [pagsize] [memsize]
-# [polsub]  Algoritmo de substituição: lru, nru, segunda_chance.
-# [arquivo] Caminho para o arquivo log.
-# [pagsize] Tamanho de página de memória: 2 a 64.
-# [memsize] Tamanho da memória física : 128 a 16384.
+# [polsub]  Algoritmo de substituição: lru, nru, segunda_chance
+# [arquivo] Caminho para o arquivo log
+# [pagsize] Tamanho de página de memória: 2 a 64 | log2 n
+# [memsize] Tamanho da memória física : 128 a 16384 | log2 n
 ```
 
 ### Formato de arquivo log
