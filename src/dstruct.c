@@ -66,15 +66,14 @@ void setCfg(char **argv) {
 
 int valSize(int val, int min, int max) {
 	if (powrOf2(val) == 0) {
-		printf(PROGRAM": %d: Tamanho invalido da ", val);
-		printf("%s\n", min == 2 ? "pagina":"memoria");
-		puts("Tamanhos validos: 2^x | x > 0");
+		printf(PROGRAM": tam(%d): Argumento invalido\n", val);
+		printf("validos: tam(x) = log2 n | ");
+		printf("%d \u2265 tam(x) \u2264 %d\n", min, max);
 		exit(EXIT_FAILURE);
 	}
 	else if (val < min || val > max) {
-		printf(PROGRAM": %d: Tamanho invalido da ", val);
-		printf("%s\n", min == 2 ? "pagina":"memoria");
-		printf("Tamanhos validos: x | x >= %d, x <= %d\n", min, max);
+		printf(PROGRAM": tam(%d): Argumento invalido\n", val);
+		printf("validos: %d \u2265 tam(x) \u2264 %d\n", min, max);
 		exit(EXIT_FAILURE);
 	}
 	return 0;
