@@ -16,10 +16,10 @@ int main(int argc, char **argv) {
 
 	puts("Executando o simulador...");
 	printf("Arquivo de entrada: %s\n", g_config.file);
-	printf("Tamanho da memoria: %d Bytes", g_config.memsize);
-	printf(" (%d KiB)\n", g_config.memsize >> 0x00A);
-	printf("Tamanho das paginas: %d Bytes", g_config.pagsize);
-	printf(" (%d KiB)\n", g_config.pagsize >> 0x00A);
+	printf("Tamanho da memoria: %ld Bytes", g_config.memsize);
+	printf(" (%ld KiB)\n", g_config.memsize >> 0x00A);
+	printf("Tamanho das paginas: %ld Bytes", g_config.pagsize);
+	printf(" (%ld KiB)\n", g_config.pagsize >> 0x00A);
 	printf("Tecnica de reposicao: %s\n", g_polstr[g_config.salg].str);
 
 	readlog(registro);
@@ -27,7 +27,7 @@ int main(int argc, char **argv) {
 	#ifdef DEBUG
 	prtReg(registro);
 	prtAddr(registro);
-	printf("Deslocamento 's': %d\n", g_config.s);
+	printf("Deslocamento p: %d\n", g_config.pgdeslc);
 	printf("Memoria usada: %ld Kib\n", registro->alocmem/128);
 	#endif
 

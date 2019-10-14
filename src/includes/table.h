@@ -8,9 +8,8 @@ typedef struct pagtab_t {
 	int bitref;
 } Pagtab;
 
-int getdeloc(void);
+int getdeslc(void);
 int getPaddr(unsigned addr);
-int getFaddr(unsigned addr);
 void prtAddr(Registro *registro);
 
 #endif // _TABLE_H

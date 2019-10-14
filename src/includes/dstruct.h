@@ -16,9 +16,9 @@ static const struct {
 struct {
 	Subalg salg;
 	char *file;
-	unsigned pagsize;
-	unsigned memsize;
-	unsigned s;
+	size_t pagsize;
+	size_t memsize;
+	unsigned pgdeslc;
 } g_config;
 
 typedef struct access_t {

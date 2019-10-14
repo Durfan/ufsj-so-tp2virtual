@@ -62,7 +62,7 @@ void setCfg(char **argv) {
 	g_config.file = argv[2];
 	g_config.pagsize = pagsize << 0x00A;
 	g_config.memsize = memsize << 0x00A;
-	g_config.s = getdeloc();
+	g_config.pgdeslc = getdeslc();
 }
 
 int valSize(int val, int min, int max) {

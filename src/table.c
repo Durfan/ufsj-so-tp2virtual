@@ -1,22 +1,15 @@
 #include "./includes/main.h"
 
-int getdeloc(void) {
-	unsigned s=0;
-	unsigned desloc = g_config.pagsize;
-
-	while (desloc > 1) {
-		desloc >>= 1;
-		s++;
-	}
-
-	return s;
+int getdeslc(void) {
+	unsigned deslc;
+	unsigned shift = g_config.pagsize;
+	for (deslc=0; shift > 1; deslc++)
+		shift >>= 1;
+	return deslc;
 }
 
 int getPaddr(unsigned addr) {
-	return addr >> g_config.s;
-}
-
-int getFaddr(unsigned addr) {
+	return addr >> g_config.pgdeslc;
 }
 
 void prtAddr(Registro *registro) {
