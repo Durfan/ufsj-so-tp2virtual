@@ -23,9 +23,9 @@ struct {
 
 typedef struct pagtab_t {
 	unsigned frame;
-	int bitres;
-	int bitmod;
-	int bitref;
+	bool bitres;
+	bool bitmod;
+	bool bitref;
 } Pagtab;
 
 Subalg str2enum(const char *str);
