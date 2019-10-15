@@ -15,8 +15,8 @@
 #include <locale.h>
 #include <errno.h>
 
-#include "dstruct.h"
-#include "logread.h"
-#include "table.h"
+#include "ds_registro.h"
+#include "ds_table.h"
+#include "fileread.h"
 
 #endif // _MAIN_H

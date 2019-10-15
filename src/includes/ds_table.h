@@ -1,5 +1,5 @@
-#ifndef _DSTRUCT_H
-#define _DSTRUCT_H
+#ifndef _DS_TABLE_H
+#define _DS_TABLE_H
 
 enum subalg_t { lru, nru, segunda_chance };
 typedef enum subalg_t Subalg;
@@ -21,23 +21,21 @@ struct {
 	unsigned pgdeslc;
 } g_config;
 
-typedef struct access_t {
-	unsigned addr;
-	char rw;
-} Access;
-
-typedef struct registro_t {
-	int naccess;
-	size_t alocmem;
-	Access *access;
-} Registro;
+typedef struct pagtab_t {
+	unsigned frame;
+	int bitres;
+	int bitmod;
+	int bitref;
+} Pagtab;
 
 Subalg str2enum(const char *str);
-Registro *iniQueue(int naccess);
-void prtReg(Registro *registro);
-void clrReg(Registro *registro);
 void setCfg(char **argv);
+
+int getdeslc(void);
+int getPaddr(unsigned addr);
+void prtAddr(Registro *registro);
+
 int valSize(int val, int min, int max);
 int powrOf2(int val);
 
-#endif // _DSTRUCT_H
+#endif // _DS_TABLE_H

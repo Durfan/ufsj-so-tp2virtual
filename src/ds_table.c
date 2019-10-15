@@ -13,45 +13,6 @@ Subalg str2enum(const char *str) {
 	exit(EXIT_FAILURE);
 }
 
-Registro *iniQueue(int naccess) {
-	Registro *registro = malloc(sizeof(Registro));
-	if (registro == NULL) {
-		perror(PROGRAM);
-		exit(EXIT_FAILURE);
-	}
-
-	registro->naccess = naccess;
-	registro->alocmem = naccess * sizeof(Access);
-	registro->access = malloc(registro->alocmem);
-	if (registro->access == NULL) {
-		perror(PROGRAM);
-		exit(EXIT_FAILURE);
-	}
-
-	return registro;
-}
-
-void prtReg(Registro *registro) {
-	int barran = 0;
-	Access *access = registro->access;
-	for (int i=0; i < registro->naccess; i++) {
-		printf(" %08x %c", access[i].addr, access[i].rw);
-		barran++;
-		if (barran > 5) {
-			putchar(0x0A);
-			barran = 0;
-		}
-		else
-			printf(" \u2502");
-	}
-	putchar(0x0A);
-}
-
-void clrReg(Registro *registro) {
-	free(registro->access);
-	free(registro);
-}
-
 void setCfg(char **argv) {
 	int pagsize = atoi(argv[3]);
 	valSize(pagsize,2,64);
@@ -63,6 +24,35 @@ void setCfg(char **argv) {
 	g_config.pagsize = pagsize << 0x00A;
 	g_config.memsize = memsize << 0x00A;
 	g_config.pgdeslc = getdeslc();
+}
+
+int getdeslc(void) {
+	unsigned deslc;
+	unsigned shift = g_config.pagsize;
+	for (deslc=0; shift > 1; deslc++)
+		shift >>= 1;
+	return deslc;
+}
+
+int getPaddr(unsigned addr) {
+	return addr >> g_config.pgdeslc;
+}
+
+void prtAddr(Registro *registro) {
+	int barran = 0;
+	Access *access = registro->access;
+	for (int i=0; i < registro->naccess; i++) {
+		printf(" %08x \u2192", access[i].addr);
+		printf(" %08x", getPaddr(access[i].addr));
+		barran++;
+		if (barran > 2) {
+			putchar(0x0A);
+			barran = 0;
+		}
+		else
+			printf(" \u2502");
+	}
+	putchar(0x0A);
 }
 
 int valSize(int val, int min, int max) {
