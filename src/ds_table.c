@@ -1,4 +1,4 @@
-#include "./includes/main.h"
+#include "includes/main.h"
 
 Subalg str2enum(const char *str) {
 	for (int i=0; i < (int)(sizeof(g_polstr)/sizeof(g_polstr[0])); ++i)

@@ -1,5 +1,5 @@
-#ifndef _MAIN_H
-#define _MAIN_H
+#ifndef INCLUDE_MAIN_H
+#define INCLUDE_MAIN_H
 
 #define _GNU_SOURCE
 #define PROGRAM "tp2virtual"
@@ -20,4 +20,5 @@
 #include "ds_table.h"
 #include "fileread.h"
 
-#endif // _MAIN_H
+//#pragma message __FILE__
+#endif // INCLUDE_MAIN_H

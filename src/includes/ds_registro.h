@@ -1,5 +1,5 @@
-#ifndef _DS_REGISTRO_H
-#define _DS_REGISTRO_H
+#ifndef INCLUDE_DS_REGISTRO_H
+#define INCLUDE_DS_REGISTRO_H
 
 typedef struct access_t {
 	unsigned addr;
@@ -16,4 +16,5 @@ Registro *iniQueue(int naccess);
 void prtReg(Registro *registro);
 void clrReg(Registro *registro);
 
-#endif // _DS_REGISTRO_H
+//#pragma message __FILE__
+#endif // INCLUDE_DS_REGISTRO_H

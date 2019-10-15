@@ -1,5 +1,5 @@
-#ifndef _DS_TABLE_H
-#define _DS_TABLE_H
+#ifndef INCLUDE_DS_TABLE_H
+#define INCLUDE_DS_TABLE_H
 
 enum subalg_t { lru, nru, segunda_chance };
 typedef enum subalg_t Subalg;
@@ -38,4 +38,5 @@ void prtAddr(Registro *registro);
 int valSize(int val, int min, int max);
 int powrOf2(int val);
 
-#endif // _DS_TABLE_H
+//#pragma message __FILE__
+#endif // INCLUDE_DS_TABLE_H

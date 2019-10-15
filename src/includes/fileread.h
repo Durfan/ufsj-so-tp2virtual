@@ -1,7 +1,8 @@
-#ifndef _FILEREAD_H
-#define _FILEREAD_H
+#ifndef INCLUDE_FILEREAD_H
+#define INCLUDE_FILEREAD_H
 
 int countLN(void);
 void readlog(Registro *registro);
 
-#endif // _FILEREAD_H
+//#pragma message __FILE__
+#endif // INCLUDE_FILEREAD_H
