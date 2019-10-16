@@ -14,9 +14,9 @@ Subalg str2enum(const char *str) {
 }
 
 void setCfg(char **argv) {
-	int pagsize = atoi(argv[3]);
+	unsigned pagsize = atoi(argv[3]);
 	valSize(pagsize,2,64);
-	int memsize = atoi(argv[4]);
+	unsigned memsize = atoi(argv[4]);
 	valSize(memsize,128,16384);
 
 	g_config.salg = str2enum(argv[1]);
@@ -24,6 +24,36 @@ void setCfg(char **argv) {
 	g_config.pagsize = pagsize << 0x00A;
 	g_config.memsize = memsize << 0x00A;
 	g_config.pgdeslc = getdeslc();
+}
+
+int memsim(void) {
+	int pgdeslc = g_config.pgdeslc;
+	size_t size = g_config.memsize;
+	size >>= pgdeslc;
+
+	return size;
+}
+
+int popmem(int *freemem) {
+	if (freemem[1] == NULL)
+		return -1;
+
+	int last = freemem[0];
+	int first = freemem[1];
+	memmove(freemem+1, freemem+2, (memsim()-1)*sizeof(*freemem));
+	freemem[last] = NULL;
+	freemem[0]--;
+
+	return first;
+}
+
+void pshmem(int *freemem, int frame) {
+	if (freemem[0] == 0)
+		return -1;
+
+	int last = freemem[0];
+	freemem[last+1] = frame;
+	freemem[0]++;
 }
 
 int getdeslc(void) {

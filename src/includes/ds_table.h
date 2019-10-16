@@ -31,6 +31,8 @@ typedef struct pagtab_t {
 Subalg str2enum(const char *str);
 void setCfg(char **argv);
 
+int memsim(void);
+int popmem(int *freemem);
 int getdeslc(void);
 int getPaddr(unsigned addr);
 void prtAddr(Registro *registro);
