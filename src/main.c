@@ -14,19 +14,20 @@ int main(int argc, char **argv) {
 	int naccess = countLN();
 	Registro *registro = iniQueue(naccess);
 
-	memsim();
-	memfree();
-
+	system("clear");
 	puts("Executando o simulador...");
-	printf("Arquivo de entrada: %s\n", g_config.file);
-	printf("Tamanho da memoria: %ld Bytes", g_config.memsize);
-	printf(" (%ld KiB/", g_config.memsize / 128);
-	printf("%g MiB)\n", (float)g_config.memsize / 131072);
-	printf("Tamanho das paginas: %ld Bytes", g_config.pagsize);
-	printf(" (%ld KiB)\n", g_config.pagsize / 128);
-	printf("Tecnica de reposicao: %s\n", g_polstr[g_config.salg].str);
-
 	readlog(registro);
+
+	Memory *memory = simmem();
+	prtmem(memory);
+
+	printf("Arquivo de entrada: %s\n", g_config.file);
+	printf("Tamanho da memoria: %ld Bytes", (g_config.memsize << 0x00A) / 8);
+	printf(" (%ld KiB/", g_config.memsize);
+	printf("%g MiB)\n", (float)g_config.memsize / 1024);
+	printf("Tamanho das paginas: %ld Bytes", (g_config.pagsize << 0x00A) / 8);
+	printf(" (%ld KiB)\n", g_config.pagsize);
+	printf("Tecnica de reposicao: %s\n", g_polstr[g_config.salg].str);
 
 	#ifdef DEBUG
 	prtReg(registro);

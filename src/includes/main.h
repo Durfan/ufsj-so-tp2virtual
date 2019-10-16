@@ -4,7 +4,7 @@
 #define _GNU_SOURCE
 #define PROGRAM "tp2virtual"
 #define MAJORV 0
-#define MINORV 2
+#define MINORV 3
 
 #define CRED  "\x1b[31m"
 #define CRSET "\x1b[0m"
@@ -17,6 +17,7 @@
 #include <errno.h>
 
 #include "ds_registro.h"
+#include "ds_memsim.h"
 #include "ds_table.h"
 #include "fileread.h"
 

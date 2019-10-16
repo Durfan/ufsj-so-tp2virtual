@@ -21,9 +21,9 @@ void setCfg(char **argv) {
 
 	g_config.salg = str2enum(argv[1]);
 	g_config.file = argv[2];
-	g_config.pagsize = pagsize << 0x00A;
-	g_config.memsize = memsize << 0x00A;
-	g_config.pgdeslc = getdeslc();
+	g_config.pagsize = pagsize;
+	g_config.memsize = memsize;
+	g_config.pgdeslc = getdeslc(pagsize);
 }
 
 int memsim(void) {
@@ -34,31 +34,9 @@ int memsim(void) {
 	return size;
 }
 
-int popmem(int *freemem) {
-	if (freemem[1] == NULL)
-		return -1;
-
-	int last = freemem[0];
-	int first = freemem[1];
-	memmove(freemem+1, freemem+2, (memsim()-1)*sizeof(*freemem));
-	freemem[last] = NULL;
-	freemem[0]--;
-
-	return first;
-}
-
-void pshmem(int *freemem, int frame) {
-	if (freemem[0] == 0)
-		return -1;
-
-	int last = freemem[0];
-	freemem[last+1] = frame;
-	freemem[0]++;
-}
-
-int getdeslc(void) {
+int getdeslc(unsigned size) {
 	unsigned deslc;
-	unsigned shift = g_config.pagsize;
+	unsigned shift = size << 0x00A;
 	for (deslc=0; shift > 1; deslc++)
 		shift >>= 1;
 	return deslc;
