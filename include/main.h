@@ -16,10 +16,10 @@
 #include <locale.h>
 #include <errno.h>
 
-#include "ds_registro.h"
+#include "config.h"
+#include "fileread.h"
 #include "ds_memsim.h"
 #include "ds_table.h"
-#include "fileread.h"
 
 //#pragma message __FILE__
 #endif // INCLUDE_MAIN_H

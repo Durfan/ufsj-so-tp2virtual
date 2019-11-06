@@ -1,21 +1,24 @@
 #include "main.h"
 
-int countLN(void) {
-	FILE *fp = fopen(g_config.file,"r");
-	if (fp == NULL) {
+Registro *iniRgtr(int naccess) {
+	Registro *registro = malloc(sizeof(Registro));
+	if (registro == NULL) {
 		perror(PROGRAM);
 		exit(EXIT_FAILURE);
 	}
 
-	int lines = 0;
-	while (EOF != (fscanf(fp, "%*[^\n]"), fscanf(fp,"%*c")))
-		++lines;
+	registro->naccess = naccess;
+	registro->alocmem = naccess * sizeof(Access);
+	registro->acesso  = malloc(registro->alocmem);
+	if (registro->acesso == NULL) {
+		perror(PROGRAM);
+		exit(EXIT_FAILURE);
+	}
 
-	fclose(fp);
-	return lines;
+	return registro;
 }
 
-void readlog(Registro *registro) {
+Registro *readlog(void) {
 	FILE *fp = fopen(g_config.file,"r");
 	if (fp == NULL) {
 		perror(PROGRAM);
@@ -27,12 +30,44 @@ void readlog(Registro *registro) {
 	size_t len = 0;
 	ssize_t read;
 
-	Access *access = registro->access;
+	fseek(fp,0L,SEEK_END);
+	g_config.filesiz = ftell(fp);
+	rewind(fp);
+
+	Registro *registro = iniRgtr(g_config.filesiz/11);
+	Access *acesso = registro->acesso;
+
 	while ((read = getline(&line,&len,fp)) != -1) {
-		sscanf(line,"%x %c", &access[i].addr, &access[i].rw);
+		sscanf(line,"%x %c", &acesso[i].addr, &acesso[i].rw);
+		#ifdef DEBUG
+		printf(" %08x %c\n", acesso[i].addr, acesso[i].rw);
+		#endif
 		i++;
 	};
 
 	free(line);
 	fclose(fp);
+
+	return registro;
+}
+
+void prtReg(Registro *registro) {
+	int barran = 0;
+	Access *acesso = registro->acesso;
+	for (int i=0; i < registro->naccess; i++) {
+		printf(" %08x %c", acesso[i].addr, acesso[i].rw);
+		barran++;
+		if (barran > 5) {
+			putchar(0x0A);
+			barran = 0;
+		}
+		else
+			printf(" \u2502");
+	}
+	putchar(0x0A);
+}
+
+void clrReg(Registro *registro) {
+	free(registro->acesso);
+	free(registro);
 }
