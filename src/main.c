@@ -1,4 +1,4 @@
-#include "includes/main.h"
+#include "main.h"
 
 int main(int argc, char **argv) {
 
@@ -19,6 +19,24 @@ int main(int argc, char **argv) {
 	readlog(registro);
 
 	Memory *memory = simmem();
+
+	enqueue(memory,0);
+	enqueue(memory,1);
+	enqueue(memory,2);
+	enqueue(memory,3);
+	enqueue(memory,4);
+	enqueue(memory,5);
+	enqueue(memory,6);
+
+	prtmem(memory);
+
+	
+	printf("%d", dequeue(memory));
+	printf("%d", dequeue(memory));
+	printf("%d", dequeue(memory));
+	printf("%d", dequeue(memory));
+	printf("%d", dequeue(memory));
+
 	prtmem(memory);
 
 	printf("Arquivo de entrada: %s\n", g_config.file);

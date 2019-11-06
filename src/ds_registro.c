@@ -1,4 +1,4 @@
-#include "includes/main.h"
+#include "main.h"
 
 Registro *iniQueue(int naccess) {
 	Registro *registro = malloc(sizeof(Registro));

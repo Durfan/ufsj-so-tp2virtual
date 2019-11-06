@@ -1,4 +1,4 @@
-#include "includes/main.h"
+#include "main.h"
 
 int countLN(void) {
 	FILE *fp = fopen(g_config.file,"r");

@@ -1,7 +1,0 @@
-{
-	"files.associations": {
-		"stdio.h": "c",
-		"system_error": "cpp",
-		"main.h": "c"
-	}
-}

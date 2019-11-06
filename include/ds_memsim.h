@@ -4,8 +4,8 @@
 typedef struct mem_t {
 	int *msim;
 	int frames;
-	int front;
-	int rear;
+	int first;
+	int last;
 } Memory;
 
 Memory *simmem(void);
