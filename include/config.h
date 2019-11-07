@@ -1,8 +1,8 @@
 #ifndef INCLUDE_CONFIG_H
 #define INCLUDE_CONFIG_H
 
-enum subalg_t { lru, nru, segunda_chance };
-typedef enum subalg_t Subalg;
+typedef enum subalg_t { 
+	lru, nru, segunda_chance } Subalg;
 
 static const struct {
 	Subalg val;

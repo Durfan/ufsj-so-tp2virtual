@@ -5,6 +5,7 @@
 extern char *program_invocation_name;
 extern char *program_invocation_short_name;
 #define VERSION "0.4.1"
+#define TAG "dev"
 
 #define CRED  "\x1b[31m"
 #define CRSET "\x1b[0m"

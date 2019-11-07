@@ -1,5 +1,7 @@
 #include "main.h"
 
+void appinfo(void);
+
 int main(int argc, char **argv) {
 
 	setlocale(LC_ALL,"");
@@ -13,17 +15,7 @@ int main(int argc, char **argv) {
 	setCfg(argv);
 	Registro *registro = readlog();
 
-	system("clear");
-	printf("%s [%s]\n", program_invocation_short_name, VERSION);
-
-	printf("Arquivo de entrada: %s\n", g_config.file);
-	printf("Tamanho do arquivo: %ld Bytes\n", g_config.filesiz);
-	printf("Tamanho da memoria: %ld Bytes", (g_config.memsize << 0x00A) / 8);
-	printf(" (%ld KiB/", g_config.memsize);
-	printf("%g MiB)\n", (float)g_config.memsize / 1024);
-	printf("Tamanho das paginas: %ld Bytes", (g_config.pagsize << 0x00A) / 8);
-	printf(" (%ld KiB)\n", g_config.pagsize);
-	printf("Tecnica de reposicao: %s\n", g_polstr[g_config.salg].str);
+	appinfo();
 
 	#ifdef DEBUG
 	prtReg(registro);
@@ -34,4 +26,17 @@ int main(int argc, char **argv) {
 
 	clrReg(registro);
 	return EXIT_SUCCESS;
+}
+
+void appinfo(void) {
+	system("clear");
+	printf("%s [%s %s]\n", program_invocation_short_name, VERSION, TAG);
+	printf("  Arquivo de entrada: %s\n", g_config.file);
+	printf("  Tamanho do arquivo: %ld Bytes\n", g_config.filesiz);
+	printf("  Tamanho da memoria: %ld Bytes", (g_config.memsize << 0x00A) / 8);
+	printf(" (%ld KiB/", g_config.memsize);
+	printf("%g MiB)\n", (float)g_config.memsize / 1024);
+	printf(" Tamanho das paginas: %ld Bytes", (g_config.pagsize << 0x00A) / 8);
+	printf(" (%ld KiB)\n", g_config.pagsize);
+	printf("Tecnica de reposicao: %s\n", g_polstr[g_config.salg].str);
 }
