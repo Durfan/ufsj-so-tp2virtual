@@ -5,8 +5,8 @@ int main(int argc, char **argv) {
 	setlocale(LC_ALL,"");
 
 	if (argc != 5) {
-		printf("%s: %s\n", argv[0], strerror(EINVAL));
-		printf("USO: %s [polsub] [arquivo] [pagsize] [memsize]", argv[0]);
+		printf("%s: %s\n", program_invocation_short_name, strerror(EINVAL));
+		printf("USO: %s [polsub] [arquivo] [pagsize] [memsize]\n", argv[0]);
 		exit(EXIT_FAILURE);
 	}
 
