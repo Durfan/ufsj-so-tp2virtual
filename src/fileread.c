@@ -3,7 +3,7 @@
 Registro *iniRgtr(int naccess) {
 	Registro *registro = malloc(sizeof(Registro));
 	if (registro == NULL) {
-		perror(PROGRAM);
+		perror(program_invocation_short_name);
 		exit(EXIT_FAILURE);
 	}
 
@@ -11,7 +11,7 @@ Registro *iniRgtr(int naccess) {
 	registro->alocmem = naccess * sizeof(Access);
 	registro->acesso  = malloc(registro->alocmem);
 	if (registro->acesso == NULL) {
-		perror(PROGRAM);
+		perror(program_invocation_short_name);
 		exit(EXIT_FAILURE);
 	}
 
@@ -21,7 +21,7 @@ Registro *iniRgtr(int naccess) {
 Registro *readlog(void) {
 	FILE *fp = fopen(g_config.file,"r");
 	if (fp == NULL) {
-		perror(PROGRAM);
+		perror(program_invocation_short_name);
 		exit(EXIT_FAILURE);
 	}
 
@@ -39,9 +39,6 @@ Registro *readlog(void) {
 
 	while ((read = getline(&line,&len,fp)) != -1) {
 		sscanf(line,"%x %c", &acesso[i].addr, &acesso[i].rw);
-		#ifdef DEBUG
-		printf(" %08x %c\n", acesso[i].addr, acesso[i].rw);
-		#endif
 		i++;
 	};
 

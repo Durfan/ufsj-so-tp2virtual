@@ -5,8 +5,8 @@ int main(int argc, char **argv) {
 	setlocale(LC_ALL,"");
 
 	if (argc != 5) {
-		printf(PROGRAM": %s\n", strerror(EINVAL));
-		puts("USO: ./"PROGRAM" [polsub] [arquivo] [pagsize] [memsize]");
+		printf("%s: %s\n", argv[0], strerror(EINVAL));
+		printf("USO: %s [polsub] [arquivo] [pagsize] [memsize]", argv[0]);
 		exit(EXIT_FAILURE);
 	}
 
@@ -14,7 +14,7 @@ int main(int argc, char **argv) {
 	Registro *registro = readlog();
 
 	system("clear");
-	puts("Executando o simulador...");
+	printf("Executando %s...\n", program_invocation_short_name);
 
 	printf("Arquivo de entrada: %s\n", g_config.file);
 	printf("Tamanho do arquivo: %ld Bytes\n", g_config.filesiz);
@@ -26,6 +26,7 @@ int main(int argc, char **argv) {
 	printf("Tecnica de reposicao: %s\n", g_polstr[g_config.salg].str);
 
 	#ifdef DEBUG
+	prtReg(registro);
 	prtAddr(registro);
 	printf("Deslocamento p: %d\n", g_config.pgdeslc);
 	printf("Memoria usada: %ld Kib\n", registro->alocmem / 128);

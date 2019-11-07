@@ -2,7 +2,8 @@
 #define INCLUDE_MAIN_H
 
 #define _GNU_SOURCE
-#define PROGRAM "tp2virtual"
+extern char *program_invocation_name;
+extern char *program_invocation_short_name;
 #define MAJORV 0
 #define MINORV 3
 

@@ -3,7 +3,7 @@
 Memory *simmem(void) {
 	Memory *memory = malloc(sizeof(Memory));
 	if (memory == NULL) {
-		perror(PROGRAM);
+		perror(program_invocation_short_name);
 		exit(EXIT_FAILURE);
 	}
 
@@ -13,7 +13,7 @@ Memory *simmem(void) {
 
 	memory->msim = malloc(memsize);
 	if (memory->msim == NULL) {
-		perror(PROGRAM);
+		perror(program_invocation_short_name);
 		exit(EXIT_FAILURE);
 	}
 

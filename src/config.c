@@ -1,11 +1,12 @@
 #include "main.h"
 
 Subalg str2enum(const char *str) {
+	char *app = program_invocation_short_name;
 	for (int i=0; i < (int)(sizeof(g_polstr)/sizeof(g_polstr[0])); ++i)
 		if (strcmp (str,g_polstr[i].str) == 0)
 			return g_polstr[i].val;
-	printf(PROGRAM": Politica de substituicao invalida\n");
-	puts("USO: ./"PROGRAM" [polsub] [arquivo] [pagsize] [memsize]");
+	printf("%s: Politica de substituicao invalida\n", app);
+	printf("USO: ./%s [polsub] [arquivo] [pagsize] [memsize]", app);
 	printf("[polsub]: ");
 	for (int i=0; i < (int)(sizeof(g_polstr)/sizeof(g_polstr[0])); ++i)
 		printf("%s ", g_polstr[i].str);
@@ -40,14 +41,15 @@ int getPaddr(unsigned addr) {
 }
 
 int valSize(int val, int min, int max) {
+	char *app = program_invocation_short_name;
 	if (powrOf2(val) == 0) {
-		printf(PROGRAM": tam(%d): Argumento invalido\n", val);
+		printf("%s: tam(%d): Argumento invalido\n", app, val);
 		printf("validos: tam(x) = log\u2082n | ");
 		printf("%d \u2265 tam(x) \u2264 %d\n", min, max);
 		exit(EXIT_FAILURE);
 	}
 	else if (val < min || val > max) {
-		printf(PROGRAM": tam(%d): Argumento invalido\n", val);
+		printf("%s: tam(%d): Argumento invalido\n", app, val);
 		printf("validos: %d \u2265 tam(x) \u2264 %d\n", min, max);
 		exit(EXIT_FAILURE);
 	}
