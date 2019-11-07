@@ -49,19 +49,15 @@ Registro *readlog(void) {
 }
 
 void prtReg(Registro *registro) {
-	int barran = 0;
+	int column = 0;
 	Access *acesso = registro->acesso;
 	for (int i=0; i < registro->naccess; i++) {
-		printf(" %08x %c", acesso[i].addr, acesso[i].rw);
-		barran++;
-		if (barran > 5) {
+		column += printf(" %08x %c", acesso[i].addr, acesso[i].rw);
+		if (column%5 == 0)
 			putchar(0x0A);
-			barran = 0;
-		}
 		else
 			printf(" \u2502");
 	}
-	putchar(0x0A);
 }
 
 void clrReg(Registro *registro) {
