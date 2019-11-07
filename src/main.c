@@ -13,7 +13,9 @@ int main(int argc, char **argv) {
 	}
 
 	setCfg(argv);
+	int frames = tblesze();
 	Registro *registro = readlog();
+	Pagtab *pagtable = malloc(frames * sizeof(Pagtab));
 
 	appinfo();
 
@@ -25,6 +27,7 @@ int main(int argc, char **argv) {
 	#endif
 
 	clrReg(registro);
+	free(pagtable);
 	return EXIT_SUCCESS;
 }
 
