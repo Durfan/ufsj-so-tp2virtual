@@ -14,7 +14,7 @@ int main(int argc, char **argv) {
 	Registro *registro = readlog();
 
 	system("clear");
-	printf("Executando %s...\n", program_invocation_short_name);
+	printf("%s [%s]\n", program_invocation_short_name, VERSION);
 
 	printf("Arquivo de entrada: %s\n", g_config.file);
 	printf("Tamanho do arquivo: %ld Bytes\n", g_config.filesiz);

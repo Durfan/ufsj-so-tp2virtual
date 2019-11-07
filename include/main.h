@@ -4,8 +4,7 @@
 #define _GNU_SOURCE
 extern char *program_invocation_name;
 extern char *program_invocation_short_name;
-#define MAJORV 0
-#define MINORV 3
+#define VERSION "0.4.1"
 
 #define CRED  "\x1b[31m"
 #define CRSET "\x1b[0m"
