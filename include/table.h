@@ -9,7 +9,6 @@ typedef struct pagtab_t {
 } Pagtab;
 
 int tblesze(void);
-void prtAddr(Registro *registro);
 
 //#pragma message __FILE__
 #endif // INCLUDE_DS_TABLE_H

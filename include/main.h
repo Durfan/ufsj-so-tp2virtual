@@ -19,8 +19,7 @@ extern char *program_invocation_short_name;
 
 #include "config.h"
 #include "fileread.h"
-#include "ds_memsim.h"
-#include "ds_table.h"
+#include "table.h"
 
 //#pragma message __FILE__
 #endif // INCLUDE_MAIN_H

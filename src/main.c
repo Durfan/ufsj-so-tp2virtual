@@ -21,7 +21,6 @@ int main(int argc, char **argv) {
 
 	#ifdef DEBUG
 	prtReg(registro);
-	prtAddr(registro);
 	printf("Deslocamento p: %d\n", g_config.pgdeslc);
 	printf("Memoria usada: %ld Kib\n", registro->alocmem / 128);
 	#endif
@@ -39,6 +38,7 @@ void appinfo(void) {
 	printf("  Tamanho da memoria: %ld Bytes", (g_config.memsize << 0x00A) / 8);
 	printf(" (%ld KiB/", g_config.memsize);
 	printf("%g MiB)\n", (float)g_config.memsize / 1024);
+	printf("  Frames disponiveis: %d\n", tblesze());
 	printf(" Tamanho das paginas: %ld Bytes", (g_config.pagsize << 0x00A) / 8);
 	printf(" (%ld KiB)\n", g_config.pagsize);
 	printf("Tecnica de reposicao: %s\n", g_polstr[g_config.salg].str);
