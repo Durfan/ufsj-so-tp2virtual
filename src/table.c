@@ -25,24 +25,48 @@ List *iniLst(void) {
 	return list;
 }
 
-void insTbl(Pagtab *table, int addr) {
+void insTbl(Pagtab *table, unsigned addr) {
 	int paddr = modHsh(addr);
-	pshLst(table[paddr].lstaddr,addr);
+	static int count = 0;
+	List *list = table[paddr].lstaddr;
+	if (schLst(list,addr)) {
+		// hit,sub,etc
+	}
+	else {
+		printf("%05d -> %04d:%08x\n", count++, paddr, addr);
+		pshLst(list,addr);
+	}
+}
+
+bool schLst(List *list, unsigned addr) {
+	if (lstnil(list))
+		return false;
+	bool inlst = false;
+	Node *ptr = list->head;
+	while (ptr != NULL) {
+		if (ptr->addr == addr)
+			inlst = true;
+		ptr = ptr->next;
+	}
+	return inlst;
 }
 
 void prtTbl(Pagtab *table) {
 	int frames = tblesze();
-	for (int i=0; i < frames; i++)
+	for (int i=0; i < frames; i++) {
 		prtLst(table[i].lstaddr);
+	}
+	putchar(0x0A);
 }
 
 void clrTbl(Pagtab *table) {
 	int frames = tblesze();
 	for (int i=0; i < frames; i++)
 		clrLst(table[i].lstaddr);
+	free(table);
 }
 
-int modHsh(int addr) {
+int modHsh(unsigned addr) {
 	addr >>= g_config.pgdeslc;
 	return addr % tblesze();
 }
@@ -55,26 +79,27 @@ int tblesze(void) {
 	return size;
 }
 
-void pshLst(List *list, int paddr) {
+void pshLst(List *list, unsigned addr) {
 	Node *node = malloc(sizeof(Node));
 	if (node == NULL) {
 		perror(program_invocation_short_name);
 		exit(EXIT_FAILURE);
 	}
-	node->paddr = paddr;
+	node->addr = addr;
 	node->next  = list->head;
 	list->head  = node;
 	list->size++;
 }
 
 void prtLst(List *list) {
-	if (lstnil(list)) return;
-	Node *ptr = list->head;
-	while (ptr != NULL) {
-		printf (" %08x", ptr->paddr);
+	if (lstnil(list))
+		return;
+	//Node *ptr = list->head;
+	printf("%d ", list->size);
+/* 	while (ptr != NULL) {
+		printf (" %08x", ptr->addr);
 		ptr = ptr->next;
-	}
-	putchar(0x0A);
+	} */
 }
 
 void clrLst(List *list) {

@@ -16,13 +16,16 @@ int main(int argc, char **argv) {
 	Registro *registro = readlog();
 	Pagtab *table = iniTbl();
 
-	for (int i=0; i < 600000; i++)
+	system("clear");
+	printf("%s [%s %s]\n", program_invocation_short_name, VERSION, TAG);
+	printf("Executando...\n");
+
+	for (unsigned i=0; i < 1000000; i++)
 		insTbl(table,registro->acesso[i].addr);
 
-	appinfo();
-	printf("naccess: %d\n", registro->naccess);
 	prtTbl(table);
-
+	appinfo();
+	
 	#ifdef DEBUG
 	prtReg(registro);
 	printf("Deslocamento p: %d\n", g_config.pgdeslc);
@@ -35,8 +38,6 @@ int main(int argc, char **argv) {
 }
 
 void appinfo(void) {
-	system("clear");
-	printf("%s [%s %s]\n", program_invocation_short_name, VERSION, TAG);
 	printf("  Arquivo de entrada: %s\n", g_config.file);
 	printf("  Tamanho do arquivo: %ld Bytes\n", g_config.filesiz);
 	printf("  Tamanho da memoria: %ld Bytes", (g_config.memsize << 0x00A) / 8);

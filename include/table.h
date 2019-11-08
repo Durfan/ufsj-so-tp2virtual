@@ -2,7 +2,7 @@
 #define INCLUDE_DS_TABLE_H
 
 typedef struct node_t {
-	int paddr;
+	unsigned addr;
 	bool bitres;
 	bool bitmod;
 	bool bitref;
@@ -21,13 +21,14 @@ typedef struct pagtab_t {
 Pagtab *iniTbl(void);
 List *iniLst(void);
 
-void insTbl(Pagtab *table, int addr);
+void insTbl(Pagtab *table, unsigned addr);
+bool schLst(List *list, unsigned addr);
 void prtTbl(Pagtab *table);
 void clrTbl(Pagtab *table);
-int modHsh(int addr);
+int modHsh(unsigned addr);
 int tblesze(void);
 
-void pshLst(List *list, int key);
+void pshLst(List *list, unsigned addr);
 void prtLst(List *list);
 void clrLst(List *list);
 int lstnil(List *list);

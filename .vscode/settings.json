@@ -1,6 +1,7 @@
 {
 	"files.associations": {
 		"main.h": "c",
-		"list": "c"
+		"list": "c",
+		"algorithm": "c"
 	}
 }
