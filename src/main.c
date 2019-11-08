@@ -20,7 +20,7 @@ int main(int argc, char **argv) {
 	printf("%s [%s %s]\n", program_invocation_short_name, VERSION, TAG);
 	printf("Executando...\n");
 
-	for (unsigned i=0; i < 1000000; i++)
+	for (unsigned i=0; i < registro->naccess; i++)
 		insTbl(table,registro->acesso[i].addr);
 
 	prtTbl(table);
