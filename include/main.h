@@ -4,7 +4,7 @@
 #define _GNU_SOURCE
 extern char *program_invocation_name;
 extern char *program_invocation_short_name;
-#define VERSION "0.4.1"
+#define VERSION "0.4.2"
 #define TAG "dev"
 
 #define CRED  "\x1b[31m"

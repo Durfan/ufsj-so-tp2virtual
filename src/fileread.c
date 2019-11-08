@@ -42,11 +42,13 @@ Registro *readlog(void) {
 	printf("  Arquivo de entrada: %s\n", g_config.file);
 	printf("  Tamanho do arquivo: %ld Bytes\n", g_config.filesiz);
 
+	printf("\e[?25l");
 	while ((read = getline(&line,&len,fp)) != -1) {
 		percent = (count * 100) / lines;
 		sscanf(line,"%x %c", &acesso[i].addr, &acesso[i].rw);
-		printf("\e[?25l               Lendo: [%03.0f%%] %08X %c\r",
-			percent, acesso[i].addr, acesso[i].rw);
+		printf("               Lendo: ");
+		printf(CYELL"[%03.0f%%] ", percent);
+		printf("%08X %c\r"CRSET, acesso[i].addr, acesso[i].rw);
 		count++;
 		i++;
 	};
