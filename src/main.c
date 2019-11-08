@@ -13,18 +13,18 @@ int main(int argc, char **argv) {
 	}
 
 	setCfg(argv);
-	Registro *registro = readlog();
-	Pagtab *table = iniTbl();
-
 	system("clear");
 	printf("%s [%s %s]\n", program_invocation_short_name, VERSION, TAG);
-	printf("Executando...\n");
+	Registro *registro = readlog();
+	Pagtab *table = iniTbl();
+	appinfo();
 
+	printf("\e[?25l");
 	for (unsigned i=0; i < registro->naccess; i++)
 		insTbl(table,registro->acesso[i].addr);
+	printf("\e[?25h");
 
-	prtTbl(table);
-	appinfo();
+	//prtTbl(table);
 	
 	#ifdef DEBUG
 	prtReg(registro);
@@ -38,8 +38,6 @@ int main(int argc, char **argv) {
 }
 
 void appinfo(void) {
-	printf("  Arquivo de entrada: %s\n", g_config.file);
-	printf("  Tamanho do arquivo: %ld Bytes\n", g_config.filesiz);
 	printf("  Tamanho da memoria: %ld Bytes", (g_config.memsize << 0x00A) / 8);
 	printf(" (%ld KiB/", g_config.memsize);
 	printf("%g MiB)\n", (float)g_config.memsize / 1024);

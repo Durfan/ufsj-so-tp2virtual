@@ -1,8 +1,9 @@
-#ifndef INCLUDE_DS_TABLE_H
-#define INCLUDE_DS_TABLE_H
+#ifndef INCLUDE_TABLE_H
+#define INCLUDE_TABLE_H
 
 typedef struct node_t {
 	unsigned addr;
+	unsigned frame;
 	bool bitres;
 	bool bitmod;
 	bool bitref;
@@ -23,15 +24,13 @@ List *iniLst(void);
 
 void insTbl(Pagtab *table, unsigned addr);
 bool schLst(List *list, unsigned addr);
-void prtTbl(Pagtab *table);
 void clrTbl(Pagtab *table);
 int modHsh(unsigned addr);
 int tblesze(void);
 
 void pshLst(List *list, unsigned addr);
-void prtLst(List *list);
 void clrLst(List *list);
 int lstnil(List *list);
 
 //#pragma message __FILE__
-#endif // INCLUDE_DS_TABLE_H
+#endif // INCLUDE_TABLE_H

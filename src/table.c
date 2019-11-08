@@ -28,14 +28,21 @@ List *iniLst(void) {
 void insTbl(Pagtab *table, unsigned addr) {
 	int paddr = modHsh(addr);
 	static int count = 0;
+	static float percent;
+	percent = (count*100) / (g_config.filesiz/11);
 	List *list = table[paddr].lstaddr;
+	printf("  Processando Tabela: "CYELL);
 	if (schLst(list,addr)) {
-		// hit,sub,etc
+		printf("[%03.0f%%] ", percent);
+		printf("%04d \u2192 %08X\r", paddr, addr);
 	}
 	else {
-		printf("%05d -> %04d:%08x\n", count++, paddr, addr);
+		printf("[%03.0f%%] ", percent);
+		printf("%04d \u2192 %08X\r", paddr, addr);
 		pshLst(list,addr);
 	}
+	printf(CRSET);
+	count++;
 }
 
 bool schLst(List *list, unsigned addr) {
@@ -49,14 +56,6 @@ bool schLst(List *list, unsigned addr) {
 		ptr = ptr->next;
 	}
 	return inlst;
-}
-
-void prtTbl(Pagtab *table) {
-	int frames = tblesze();
-	for (int i=0; i < frames; i++) {
-		prtLst(table[i].lstaddr);
-	}
-	putchar(0x0A);
 }
 
 void clrTbl(Pagtab *table) {
@@ -86,20 +85,13 @@ void pshLst(List *list, unsigned addr) {
 		exit(EXIT_FAILURE);
 	}
 	node->addr = addr;
+	node->frame = -1;
+	node->bitres = false;
+	node->bitmod = false;
+	node->bitref = false;
 	node->next  = list->head;
 	list->head  = node;
 	list->size++;
-}
-
-void prtLst(List *list) {
-	if (lstnil(list))
-		return;
-	//Node *ptr = list->head;
-	printf("%d ", list->size);
-/* 	while (ptr != NULL) {
-		printf (" %08x", ptr->addr);
-		ptr = ptr->next;
-	} */
 }
 
 void clrLst(List *list) {

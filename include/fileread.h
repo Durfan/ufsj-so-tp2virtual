@@ -14,7 +14,6 @@ typedef struct registro_t {
 
 Registro *iniRgtr(int naccess);
 Registro *readlog(void);
-void prtReg(Registro *registro);
 void clrReg(Registro *registro);
 
 //#pragma message __FILE__

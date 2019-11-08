@@ -8,6 +8,7 @@ extern char *program_invocation_short_name;
 #define TAG "dev"
 
 #define CRED  "\x1b[31m"
+#define CYELL "\x1b[33m"
 #define CRSET "\x1b[0m"
 
 #include <stdio.h>
@@ -20,6 +21,7 @@ extern char *program_invocation_short_name;
 #include "config.h"
 #include "fileread.h"
 #include "table.h"
+#include "dtools.h"
 
 //#pragma message __FILE__
 #endif // INCLUDE_MAIN_H

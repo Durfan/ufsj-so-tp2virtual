@@ -25,7 +25,6 @@ Registro *readlog(void) {
 		exit(EXIT_FAILURE);
 	}
 
-	int i = 0;
 	char *line = NULL;
 	size_t len = 0;
 	ssize_t read;
@@ -34,30 +33,29 @@ Registro *readlog(void) {
 	g_config.filesiz = ftell(fp);
 	rewind(fp);
 
-	Registro *registro = iniRgtr(g_config.filesiz/11);
+	int i = 0, count = 1;
+	int lines = g_config.filesiz/11;
+	float percent;
+
+	Registro *registro = iniRgtr(lines);
 	Access *acesso = registro->acesso;
+	printf("  Arquivo de entrada: %s\n", g_config.file);
+	printf("  Tamanho do arquivo: %ld Bytes\n", g_config.filesiz);
 
 	while ((read = getline(&line,&len,fp)) != -1) {
+		percent = (count * 100) / lines;
 		sscanf(line,"%x %c", &acesso[i].addr, &acesso[i].rw);
+		printf("\e[?25l               Lendo: [%03.0f%%] %08X %c\r",
+			percent, acesso[i].addr, acesso[i].rw);
+		count++;
 		i++;
 	};
+	printf("\e[?25h");
 
 	free(line);
 	fclose(fp);
 
 	return registro;
-}
-
-void prtReg(Registro *registro) {
-	int column = 0;
-	Access *acesso = registro->acesso;
-	for (int i=0; i < registro->naccess; i++) {
-		column += printf(" %08x %c", acesso[i].addr, acesso[i].rw);
-		if (column%5 == 0)
-			putchar(0x0A);
-		else
-			printf(" \u2502");
-	}
 }
 
 void clrReg(Registro *registro) {
