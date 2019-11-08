@@ -13,11 +13,15 @@ int main(int argc, char **argv) {
 	}
 
 	setCfg(argv);
-	int frames = tblesze();
 	Registro *registro = readlog();
-	Pagtab *pagtable = malloc(frames * sizeof(Pagtab));
+	Pagtab *table = iniTbl();
+
+	for (int i=0; i < 600000; i++)
+		insTbl(table,registro->acesso[i].addr);
 
 	appinfo();
+	printf("naccess: %d\n", registro->naccess);
+	prtTbl(table);
 
 	#ifdef DEBUG
 	prtReg(registro);
@@ -26,7 +30,7 @@ int main(int argc, char **argv) {
 	#endif
 
 	clrReg(registro);
-	free(pagtable);
+	clrTbl(table);
 	return EXIT_SUCCESS;
 }
 
