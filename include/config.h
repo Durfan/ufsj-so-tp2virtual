@@ -19,6 +19,7 @@ struct {
 	Subalg salg;
 	char *file;
 	unsigned filesiz;
+	unsigned naccess;
 	unsigned pagsize;
 	unsigned memsize;
 	unsigned pgdeslc;
