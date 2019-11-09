@@ -3,7 +3,7 @@
 Subalg str2enum(const char *str) {
 	char *app = program_invocation_short_name;
 	for (int i=0; i < (int)(sizeof(g_polstr)/sizeof(g_polstr[0])); ++i)
-		if (strcmp (str,g_polstr[i].str) == 0)
+		if (strcmp(str,g_polstr[i].str) == 0)
 			return g_polstr[i].val;
 	printf("%s: Politica de substituicao invalida\n", app);
 	printf("USO: ./%s [polsub] [arquivo] [pagsize] [memsize]", app);

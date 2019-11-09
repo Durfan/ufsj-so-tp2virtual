@@ -4,6 +4,8 @@
 typedef enum subalg_t { 
 	lru, nru, segunda_chance } Subalg;
 
+typedef unsigned int Addr;
+
 static const struct {
 	Subalg val;
 	const char *str;

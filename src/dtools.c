@@ -24,7 +24,7 @@ void prtLst(List *list) {
 	if (lstnil(list))
 		return;
 	//Node *ptr = list->head;
-	printf("%d ", list->size);
+	printf("%ld ", list->size);
 /* 	while (ptr != NULL) {
 		printf (" %08x", ptr->addr);
 		ptr = ptr->next;

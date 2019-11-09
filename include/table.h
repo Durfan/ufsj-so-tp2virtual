@@ -2,8 +2,8 @@
 #define INCLUDE_TABLE_H
 
 typedef struct node_t {
-	unsigned addr;
-	unsigned frame;
+	Addr addr;
+	Addr frame;
 	bool bitres;
 	bool bitmod;
 	bool bitref;
@@ -11,7 +11,7 @@ typedef struct node_t {
 } Node;
 
 typedef struct list_t {
-	int size;
+	size_t size;
 	struct node_t *head;
 } List;
 
@@ -22,13 +22,13 @@ typedef struct pagtab_t {
 Pagtab *iniTbl(void);
 List *iniLst(void);
 
-void insTbl(Pagtab *table, unsigned addr);
-bool schLst(List *list, unsigned addr);
+void insTbl(Pagtab *table, Addr addr);
+bool schLst(List *list, Addr addr);
 void clrTbl(Pagtab *table);
-int modHsh(unsigned addr);
-int tblesze(void);
+int modHsh(Addr addr);
+unsigned tblesze(void);
 
-void pshLst(List *list, unsigned addr);
+void pshLst(List *list, Addr addr);
 void clrLst(List *list);
 int lstnil(List *list);
 

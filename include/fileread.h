@@ -2,7 +2,7 @@
 #define INCLUDE_FILEREAD_H
 
 typedef struct access_t {
-	unsigned addr;
+	Addr addr;
 	char rw;
 } Access;
 
