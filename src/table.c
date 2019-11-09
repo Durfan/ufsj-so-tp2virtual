@@ -1,7 +1,7 @@
 #include "main.h"
 
 Pagtab *iniTbl(void) {
-	Addr frames = tblesze();
+	Addr frames = g_config.frames;
 	Pagtab *table = malloc(frames * sizeof(Pagtab));
 	if (table == NULL) {
 		perror(program_invocation_short_name);
@@ -35,7 +35,7 @@ void execRG(Pagtab *table, Registro *registro) {
 	for (unsigned i=0; i < registro->naccess; i++) {
 		percent = (count*100) / (g_config.filesiz/11);
 		addr = registro->acesso[i].addr;
-		addr >>= g_config.pgdeslc;
+		addr = getPaddr(addr);
 		paddr = modHsh(addr);
 		list = table[paddr].lstaddr;
 
@@ -69,22 +69,14 @@ bool schLst(List *list, Addr paddr) {
 }
 
 void clrTbl(Pagtab *table) {
-	Addr frames = tblesze();
+	unsigned frames = g_config.frames;
 	for (unsigned i=0; i < frames; i++)
 		clrLst(table[i].lstaddr);
 	free(table);
 }
 
-int modHsh(Addr addr) {
-	return addr % tblesze();
-}
-
-unsigned tblesze(void) {
-	int pgdeslc = g_config.pgdeslc;
-	size_t size = g_config.memsize;
-	size <<= 0x00A;
-	size >>= pgdeslc;
-	return size;
+unsigned modHsh(Addr addr) {
+	return addr % g_config.frames;
 }
 
 void pshLst(List *list, Addr paddr) {

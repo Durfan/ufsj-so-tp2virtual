@@ -21,6 +21,7 @@ extern char *program_invocation_short_name;
 #include "config.h"
 #include "fileread.h"
 #include "table.h"
+#include "vmem.h"
 #include "dtools.h"
 
 //#pragma message __FILE__

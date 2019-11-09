@@ -14,9 +14,11 @@ int main(int argc, char **argv) {
 
 	setCfg(argv);
 	system("clear");
-	printf("%s [%s %s]\n", program_invocation_short_name, VERSION, TAG);
+	printf(CYELL"%s [%s %s]\n"CRSET,
+		program_invocation_short_name,VERSION,TAG);
 	Registro *registro = readlog();
 	Pagtab *table = iniTbl();
+	int *vmem = iniMem();
 	appinfo();
 
 	execRG(table,registro);
@@ -30,15 +32,16 @@ int main(int argc, char **argv) {
 
 	clrReg(registro);
 	clrTbl(table);
+	free(vmem);
 	return EXIT_SUCCESS;
 }
 
 void appinfo(void) {
-	printf("  Tamanho da memoria: %ld Bytes", (g_config.memsize << 0x00A) / 8);
-	printf(" (%ld KiB/", g_config.memsize);
+	printf("  Tamanho da memoria: %d Bytes", (g_config.memsize << 0x00A) / 8);
+	printf(" (%d KiB/", g_config.memsize);
 	printf("%g MiB)\n", (float)g_config.memsize / 1024);
-	printf("  Frames disponiveis: %d\n", tblesze());
-	printf(" Tamanho das paginas: %ld Bytes", (g_config.pagsize << 0x00A) / 8);
-	printf(" (%ld KiB)\n", g_config.pagsize);
+	printf("  Frames disponiveis: %d\n", g_config.frames);
+	printf(" Tamanho das paginas: %d Bytes", (g_config.pagsize << 0x00A) / 8);
+	printf(" (%d KiB)\n", g_config.pagsize);
 	printf("Tecnica de reposicao: %s\n", g_polstr[g_config.salg].str);
 }

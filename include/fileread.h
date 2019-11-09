@@ -9,7 +9,7 @@ typedef struct access_t {
 typedef struct registro_t {
 	Access *acesso;
 	unsigned naccess;
-	size_t alocmem;
+	unsigned alocmem;
 } Registro;
 
 Registro *iniRgtr(int naccess);

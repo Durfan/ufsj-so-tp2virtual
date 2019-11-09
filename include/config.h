@@ -18,18 +18,20 @@ static const struct {
 struct {
 	Subalg salg;
 	char *file;
-	size_t filesiz;
-	size_t pagsize;
-	size_t memsize;
+	unsigned filesiz;
+	unsigned pagsize;
+	unsigned memsize;
 	unsigned pgdeslc;
+	unsigned frames;
 } g_config;
 
 Subalg str2enum(const char *str);
 void setCfg(char **argv);
-int getdeslc(unsigned size);
-int getPaddr(unsigned addr);
-int valSize(int val, int min, int max);
-int powrOf2(int val);
+unsigned getdeslc(unsigned size);
+unsigned tablesze(unsigned pgdeslc, unsigned memsize);
+unsigned getPaddr(unsigned addr);
+unsigned valSize(unsigned val, unsigned min, unsigned max);
+unsigned powrOf2(unsigned val);
 
 //#pragma message __FILE__
 #endif // INCLUDE_CONFIG_H

@@ -19,16 +19,19 @@ void setCfg(char **argv) {
 	valSize(pagsize,2,64);
 	unsigned memsize = atoi(argv[4]);
 	valSize(memsize,128,16384);
+	unsigned desloc = getdeslc(pagsize);
+	unsigned frames = tablesze(desloc,memsize);
 
 	g_config.salg = str2enum(argv[1]);
 	g_config.file = argv[2];
 	g_config.filesiz = 0;
 	g_config.pagsize = pagsize;
 	g_config.memsize = memsize;
-	g_config.pgdeslc = getdeslc(pagsize);
+	g_config.pgdeslc = desloc;
+	g_config.frames  = frames;
 }
 
-int getdeslc(unsigned size) {
+unsigned getdeslc(unsigned size) {
 	unsigned deslc;
 	unsigned shift = size << 0x00A;
 	for (deslc=0; shift > 1; deslc++)
@@ -36,11 +39,18 @@ int getdeslc(unsigned size) {
 	return deslc;
 }
 
-int getPaddr(unsigned addr) {
+unsigned tablesze(unsigned pgdeslc, unsigned memsize) {
+	unsigned frames = memsize;
+	frames <<= 0x00A;
+	frames >>= pgdeslc;
+	return frames;
+}
+
+unsigned getPaddr(Addr addr) {
 	return addr >> g_config.pgdeslc;
 }
 
-int valSize(int val, int min, int max) {
+unsigned valSize(unsigned val, unsigned min, unsigned max) {
 	char *app = program_invocation_short_name;
 	if (powrOf2(val) == 0) {
 		printf("%s: tam(%d): Argumento invalido\n", app, val);
@@ -56,6 +66,6 @@ int valSize(int val, int min, int max) {
 	return 0;
 }
 
-int powrOf2(int val) {
+unsigned powrOf2(unsigned val) {
 	return val && !(val & (val - 1));
 }

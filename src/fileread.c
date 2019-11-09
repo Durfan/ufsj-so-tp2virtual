@@ -40,7 +40,7 @@ Registro *readlog(void) {
 	Registro *registro = iniRgtr(lines);
 	Access *acesso = registro->acesso;
 	printf("  Arquivo de entrada: %s\n", g_config.file);
-	printf("  Tamanho do arquivo: %ld Bytes\n", g_config.filesiz);
+	printf("  Tamanho do arquivo: %d Bytes\n", g_config.filesiz);
 
 	printf("\e[?25l");
 	while ((read = getline(&line,&len,fp)) != -1) {

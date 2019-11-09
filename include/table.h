@@ -11,7 +11,7 @@ typedef struct pnode_t {
 } Pnode;
 
 typedef struct list_t {
-	size_t size;
+	unsigned size;
 	struct pnode_t *head;
 } List;
 
@@ -25,8 +25,7 @@ List *iniLst(void);
 void execRG(Pagtab *table, Registro *registro);
 bool schLst(List *list, Addr paddr);
 void clrTbl(Pagtab *table);
-int modHsh(Addr addr);
-unsigned tblesze(void);
+unsigned modHsh(Addr addr);
 
 void pshLst(List *list, Addr paddr);
 void clrLst(List *list);

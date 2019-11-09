@@ -13,14 +13,14 @@ void prtReg(Registro *registro) {
 }
 
 void prtTbl(Pagtab *table) {
-	int frames = tblesze();
+	int frames = g_config.frames;
 	int column = 0;
-	size_t lstsze;
+	unsigned lstsze;
 	printf("-DEBUG: Distribuicao\n");
 	for (int i=0; i < frames; i++) {
 		lstsze = table[i].lstaddr->size;
 		printf("L%04d:",i);
-		printf("%04ld ",lstsze);
+		printf("%04d ",lstsze);
 		if (column > 5) {
 			putchar(0x0A);
 			column = 0;
