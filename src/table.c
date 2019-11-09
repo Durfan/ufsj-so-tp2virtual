@@ -59,7 +59,7 @@ bool schLst(List *list, Addr paddr) {
 	if (lstnil(list))
 		return false;
 	bool inlst = false;
-	Node *ptr = list->head;
+	Pnode *ptr = list->head;
 	while (ptr != NULL) {
 		if (ptr->paddr == paddr)
 			inlst = true;
@@ -88,18 +88,18 @@ unsigned tblesze(void) {
 }
 
 void pshLst(List *list, Addr paddr) {
-	Node *node = malloc(sizeof(Node));
-	if (node == NULL) {
+	Pnode *pnode = malloc(sizeof(Pnode));
+	if (pnode == NULL) {
 		perror(program_invocation_short_name);
 		exit(EXIT_FAILURE);
 	}
-	node->paddr = paddr;
-	node->frame = -1;
-	node->bitres = false;
-	node->bitmod = false;
-	node->bitref = false;
-	node->next  = list->head;
-	list->head  = node;
+	pnode->paddr = paddr;
+	pnode->frame = -1;
+	pnode->bitres = false;
+	pnode->bitmod = false;
+	pnode->bitref = false;
+	pnode->next  = list->head;
+	list->head  = pnode;
 	list->size++;
 }
 
@@ -108,7 +108,7 @@ void clrLst(List *list) {
 		free(list);
 		return;
 	}
-	Node *delNode;
+	Pnode *delNode;
 	while (list->head != NULL) {
 		delNode = list->head;
 		list->head = list->head->next;

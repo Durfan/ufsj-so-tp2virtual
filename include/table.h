@@ -1,18 +1,18 @@
 #ifndef INCLUDE_TABLE_H
 #define INCLUDE_TABLE_H
 
-typedef struct node_t {
+typedef struct pnode_t {
 	Addr paddr;
 	Addr frame;
 	bool bitres;
 	bool bitmod;
 	bool bitref;
-	struct node_t *next;
-} Node;
+	struct pnode_t *next;
+} Pnode;
 
 typedef struct list_t {
 	size_t size;
-	struct node_t *head;
+	struct pnode_t *head;
 } List;
 
 typedef struct pagtab_t {

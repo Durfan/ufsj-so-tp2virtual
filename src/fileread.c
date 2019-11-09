@@ -52,7 +52,7 @@ Registro *readlog(void) {
 		count++;
 		i++;
 	};
-	printf("\e[?25h");
+	printf("\33[2K\r\e[?25h");
 
 	free(line);
 	fclose(fp);

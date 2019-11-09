@@ -20,7 +20,7 @@ int main(int argc, char **argv) {
 	appinfo();
 
 	execRG(table,registro);
-	//prtTbl(table);
+	prtTbl(table);
 	
 	#ifdef DEBUG
 	prtReg(registro);
