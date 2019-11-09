@@ -14,19 +14,19 @@ void prtReg(Registro *registro) {
 
 void prtTbl(Pagtab *table) {
 	int frames = tblesze();
+	int column = 0;
+	size_t lstsze;
+	printf("-DEBUG: Distribuicao\n");
 	for (int i=0; i < frames; i++) {
-		prtLst(table[i].lstaddr);
+		lstsze = table[i].lstaddr->size;
+		printf("L%04d:",i);
+		printf("%04ld ",lstsze);
+		if (column > 5) {
+			putchar(0x0A);
+			column = 0;
+		}
+		else
+			column++;
 	}
 	putchar(0x0A);
-}
-
-void prtLst(List *list) {
-	if (lstnil(list))
-		return;
-	//Node *ptr = list->head;
-	printf("%ld ", list->size);
-/* 	while (ptr != NULL) {
-		printf (" %08x", ptr->addr);
-		ptr = ptr->next;
-	} */
 }

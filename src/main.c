@@ -19,11 +19,7 @@ int main(int argc, char **argv) {
 	Pagtab *table = iniTbl();
 	appinfo();
 
-	printf("\e[?25l");
-	for (unsigned i=0; i < registro->naccess; i++)
-		insTbl(table,registro->acesso[i].addr);
-	printf("\e[?25h");
-
+	execRG(table,registro);
 	//prtTbl(table);
 	
 	#ifdef DEBUG

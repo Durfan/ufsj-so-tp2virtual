@@ -25,33 +25,43 @@ List *iniLst(void) {
 	return list;
 }
 
-void insTbl(Pagtab *table, Addr addr) {
-	Addr paddr = modHsh(addr);
-	static unsigned count = 0;
-	static float percent;
-	percent = (count*100) / (g_config.filesiz/11);
-	List *list = table[paddr].lstaddr;
-	printf("  Processando Tabela: "CYELL);
-	if (schLst(list,addr)) {
-		printf("[%03.0f%%] ", percent);
-		printf("%04d \u2192 %08X\r", paddr, addr);
+void execRG(Pagtab *table, Registro *registro) {
+	Addr addr,paddr;
+	List *list;
+	unsigned count = 1;
+	float percent;
+
+	printf("\e[?25l");
+	for (unsigned i=0; i < registro->naccess; i++) {
+		percent = (count*100) / (g_config.filesiz/11);
+		addr = registro->acesso[i].addr;
+		addr >>= g_config.pgdeslc;
+		paddr = modHsh(addr);
+		list = table[paddr].lstaddr;
+
+		printf("  Processando Tabela: "CYELL);
+		if (schLst(list,addr)) {
+			printf("[%03.0f%%] ",percent);
+			printf("%04d \u2192 %08X\r",paddr,addr);
+		}
+		else {
+			printf("[%03.0f%%] ",percent);
+			printf("%04d \u2192 %08X\r",paddr,addr);
+			pshLst(list,addr);
+		}
+		printf(CRSET);
+		count++;
 	}
-	else {
-		printf("[%03.0f%%] ", percent);
-		printf("%04d \u2192 %08X\r", paddr, addr);
-		pshLst(list,addr);
-	}
-	printf(CRSET);
-	count++;
+	printf("\33[2K\r\e[?25h");
 }
 
-bool schLst(List *list, Addr addr) {
+bool schLst(List *list, Addr paddr) {
 	if (lstnil(list))
 		return false;
 	bool inlst = false;
 	Node *ptr = list->head;
 	while (ptr != NULL) {
-		if (ptr->addr == addr)
+		if (ptr->paddr == paddr)
 			inlst = true;
 		ptr = ptr->next;
 	}
@@ -66,7 +76,6 @@ void clrTbl(Pagtab *table) {
 }
 
 int modHsh(Addr addr) {
-	addr >>= g_config.pgdeslc;
 	return addr % tblesze();
 }
 
@@ -78,13 +87,13 @@ unsigned tblesze(void) {
 	return size;
 }
 
-void pshLst(List *list, Addr addr) {
+void pshLst(List *list, Addr paddr) {
 	Node *node = malloc(sizeof(Node));
 	if (node == NULL) {
 		perror(program_invocation_short_name);
 		exit(EXIT_FAILURE);
 	}
-	node->addr = addr;
+	node->paddr = paddr;
 	node->frame = -1;
 	node->bitres = false;
 	node->bitmod = false;

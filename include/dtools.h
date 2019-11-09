@@ -3,7 +3,6 @@
 
 void prtReg(Registro *registro);
 void prtTbl(Pagtab *table);
-void prtLst(List *list);
 
 //#pragma message __FILE__
 #endif // INCLUDE_DTOOLS_H
