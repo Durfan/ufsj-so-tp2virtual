@@ -28,21 +28,24 @@ List *iniLst(void) {
 void execRG(Pagtab *table, Registro *registro) {
 	Addr addr,paddr;
 	List *list;
+	Pnode *pnode;
 	unsigned count = 1;
 	float percent;
 
 	printf("\e[?25l");
 	for (unsigned i=0; i < registro->naccess; i++) {
 		percent = (count*100) / (g_config.filesiz/11);
-		addr = registro->acesso[i].addr;
-		addr = getPaddr(addr);
+		addr  = registro->acesso[i].addr;
+		addr  = getPaddr(addr);
 		paddr = modHsh(addr);
-		list = table[paddr].lstaddr;
+		list  = table[paddr].lstaddr;
+		pnode = schLst(list,addr);
 
 		printf("  Processando Tabela: "CYELL);
-		if (schLst(list,addr)) {
+		if (pnode != NULL) {
 			printf("[%03.0f%%] ",percent);
 			printf("%04d \u2192 %08X\r",paddr,addr);
+			pnode->count++;
 		}
 		else {
 			printf("[%03.0f%%] ",percent);
@@ -55,17 +58,16 @@ void execRG(Pagtab *table, Registro *registro) {
 	printf("\33[2K\r\e[?25h");
 }
 
-bool schLst(List *list, Addr paddr) {
+Pnode *schLst(List *list, Addr paddr) {
 	if (lstnil(list))
-		return false;
-	bool inlst = false;
+		return NULL;
 	Pnode *ptr = list->head;
 	while (ptr != NULL) {
 		if (ptr->paddr == paddr)
-			inlst = true;
+			return ptr;
 		ptr = ptr->next;
 	}
-	return inlst;
+	return NULL;
 }
 
 void clrTbl(Pagtab *table) {
@@ -90,6 +92,7 @@ void pshLst(List *list, Addr paddr) {
 	pnode->bitres = false;
 	pnode->bitmod = false;
 	pnode->bitref = false;
+	pnode->count = 0;
 	pnode->next  = list->head;
 	list->head  = pnode;
 	list->size++;

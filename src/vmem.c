@@ -9,13 +9,42 @@ int *iniMem(void) {
 	return vmem;
 }
 
-int getfreeframe(int *mem){
+int getframe(int *vmem) {
+	int frame = getfreeframe(vmem);
+	if (frame != -1)
+		return frame;
+
+	switch (g_config.salg) {
+	case lru:
+		/* code */
+		break;
+
+	case nru:
+		/* code */
+		break;
+
+	case segunda_chance:
+		/* code */
+		break;
+	
+	default:
+		break;
+	}
+
+	return 0;
+}
+
+int getfreeframe(int *vmem) {
 	unsigned frames = g_config.frames;
 	for (unsigned i=0; i < frames/2; i++) {
-		if (mem[i] == 0)
+		if (vmem[i] == 0)
 			return i;
-		if (mem[(frames-1)-i] == 0)
+		if (vmem[(frames-1)-i] == 0)
 			return (frames-1)-i;
 	}
 	return -1;
+}
+
+void algLRU(Pagtab *table) {
+
 }

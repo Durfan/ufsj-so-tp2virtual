@@ -7,6 +7,7 @@ typedef struct pnode_t {
 	bool bitres;
 	bool bitmod;
 	bool bitref;
+	unsigned count;
 	struct pnode_t *next;
 } Pnode;
 
@@ -23,7 +24,7 @@ Pagtab *iniTbl(void);
 List *iniLst(void);
 
 void execRG(Pagtab *table, Registro *registro);
-bool schLst(List *list, Addr paddr);
+Pnode *schLst(List *list, Addr paddr);
 void clrTbl(Pagtab *table);
 unsigned modHsh(Addr addr);
 
