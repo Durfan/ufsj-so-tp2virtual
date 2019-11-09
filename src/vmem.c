@@ -66,7 +66,6 @@ int algLRU(Pagtab *table, int *vmem) {
 	}
 
 	frame = fnode->frame;
-	vmem[frame] = 0;
 	fnode->frame = -1;
 	return frame;
 }
