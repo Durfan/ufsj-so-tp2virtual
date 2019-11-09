@@ -29,8 +29,8 @@ void execRG(Pagtab *table, Registro *registro, int *vmem) {
 	Addr addr,paddr;
 	List *list;
 	Pnode *pnode;
-	unsigned pghit = 0, pgfalt = 0;
-	unsigned count = 1, access = 0;
+	unsigned fault = 0;
+	unsigned count = 1;
 	float percent;
 
 	printf("\e[?25l");
@@ -45,29 +45,24 @@ void execRG(Pagtab *table, Registro *registro, int *vmem) {
 		printf("  Processando Tabela: "CYELL);
 		if (pnode != NULL) {
 			pnode->count++;
-			printf("[%03.0f%%] ",percent);
-			printf("%04d \u2192 %08X : ", paddr, addr);
+			printf("[%03.0f%%] ", percent);
+			printf("%04d \u2192 %08X : ",paddr,addr);
 		}
 		else {
-			access++;
 			pnode = pshLst(list,addr);
-			printf("[%03.0f%%] ",percent);
-			printf("%04d \u2192 %08X : ", paddr, addr);
-
+			printf("[%03.0f%%] ", percent);
+			printf("%04d \u2192 %08X : ",paddr,addr);
 		}
 		if (pnode->frame == -1) {
-			pgfalt++;
 			pnode->frame = getframe(table,vmem);
-			printf("%04d : %04d", pnode->frame, pgfalt);
+			printf("%04d : %04d",pnode->frame,fault++);
 		}
-		else
-			pghit++;
 		
 		printf("\r"CRSET);
 		count++;
 	}
 	printf("\33[2K\r\e[?25h");
-	printf("  Pag Hit/Pag Fault: %d/%d\n",pghit,pgfalt);
+	printf("     Falta de Pagina: %d\n",fault);
 }
 
 Pnode *schLst(List *list, Addr paddr) {
