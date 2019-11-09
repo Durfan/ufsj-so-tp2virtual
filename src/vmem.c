@@ -9,14 +9,14 @@ int *iniMem(void) {
 	return vmem;
 }
 
-int getframe(int *vmem) {
+int getframe(Pagtab *table, int *vmem) {
 	int frame = getfreeframe(vmem);
 	if (frame != -1)
 		return frame;
 
 	switch (g_config.salg) {
 	case lru:
-		/* code */
+		frame = algLRU(table,vmem);
 		break;
 
 	case nru:
@@ -31,20 +31,42 @@ int getframe(int *vmem) {
 		break;
 	}
 
-	return 0;
+	return frame;
 }
 
 int getfreeframe(int *vmem) {
 	unsigned frames = g_config.frames;
-	for (unsigned i=0; i < frames/2; i++) {
-		if (vmem[i] == 0)
+	for (unsigned i=0; i < frames; i++) {
+		if (vmem[i] == 0) {
+			vmem[i] = 1;
 			return i;
-		if (vmem[(frames-1)-i] == 0)
-			return (frames-1)-i;
+		}
 	}
 	return -1;
 }
 
-void algLRU(Pagtab *table) {
+int algLRU(Pagtab *table, int *vmem) {
+	unsigned frames = g_config.frames;
+	int min = INT_MAX;
+	int frame,count;
+	List *list;
+	Pnode *pnode,*fnode;
 
+	for (unsigned i=0; i < frames; i++) {
+		list = table[i].lstaddr;
+		pnode = list->head;
+		while (pnode != NULL) {
+			count = pnode->count;
+			if (count < min && pnode->frame != -1) {
+				min = count;
+				fnode = pnode;
+			}
+			pnode = pnode->next;
+		}
+	}
+
+	frame = fnode->frame;
+	vmem[frame] = 0;
+	fnode->frame = -1;
+	return frame;
 }

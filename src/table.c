@@ -25,11 +25,12 @@ List *iniLst(void) {
 	return list;
 }
 
-void execRG(Pagtab *table, Registro *registro) {
+void execRG(Pagtab *table, Registro *registro, int *vmem) {
 	Addr addr,paddr;
 	List *list;
 	Pnode *pnode;
-	unsigned count = 1;
+	unsigned pghit = 0, pgfalt = 0;
+	unsigned count = 1, access = 0;
 	float percent;
 
 	printf("\e[?25l");
@@ -43,19 +44,30 @@ void execRG(Pagtab *table, Registro *registro) {
 
 		printf("  Processando Tabela: "CYELL);
 		if (pnode != NULL) {
-			printf("[%03.0f%%] ",percent);
-			printf("%04d \u2192 %08X\r",paddr,addr);
 			pnode->count++;
+			printf("[%03.0f%%] ",percent);
+			printf("%04d \u2192 %08X : ", paddr, addr);
 		}
 		else {
+			access++;
+			pnode = pshLst(list,addr);
 			printf("[%03.0f%%] ",percent);
-			printf("%04d \u2192 %08X\r",paddr,addr);
-			pshLst(list,addr);
+			printf("%04d \u2192 %08X : ", paddr, addr);
+
 		}
-		printf(CRSET);
+		if (pnode->frame == -1) {
+			pgfalt++;
+			pnode->frame = getframe(table,vmem);
+			printf("%04d : %04d", pnode->frame, pgfalt);
+		}
+		else
+			pghit++;
+		
+		printf("\r"CRSET);
 		count++;
 	}
 	printf("\33[2K\r\e[?25h");
+	printf("  Pag Hit/Pag Fault: %d/%d\n",pghit,pgfalt);
 }
 
 Pnode *schLst(List *list, Addr paddr) {
@@ -70,18 +82,7 @@ Pnode *schLst(List *list, Addr paddr) {
 	return NULL;
 }
 
-void clrTbl(Pagtab *table) {
-	unsigned frames = g_config.frames;
-	for (unsigned i=0; i < frames; i++)
-		clrLst(table[i].lstaddr);
-	free(table);
-}
-
-unsigned modHsh(Addr addr) {
-	return addr % g_config.frames;
-}
-
-void pshLst(List *list, Addr paddr) {
+Pnode *pshLst(List *list, Addr paddr) {
 	Pnode *pnode = malloc(sizeof(Pnode));
 	if (pnode == NULL) {
 		perror(program_invocation_short_name);
@@ -93,9 +94,22 @@ void pshLst(List *list, Addr paddr) {
 	pnode->bitmod = false;
 	pnode->bitref = false;
 	pnode->count = 0;
-	pnode->next  = list->head;
-	list->head  = pnode;
+	pnode->next = list->head;
+	list->head = pnode;
 	list->size++;
+
+	return pnode;
+}
+
+void clrTbl(Pagtab *table) {
+	unsigned frames = g_config.frames;
+	for (unsigned i=0; i < frames; i++)
+		clrLst(table[i].lstaddr);
+	free(table);
+}
+
+unsigned modHsh(Addr addr) {
+	return addr % g_config.frames;
 }
 
 void clrLst(List *list) {

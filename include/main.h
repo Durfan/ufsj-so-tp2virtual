@@ -16,6 +16,7 @@ extern char *program_invocation_short_name;
 #include <string.h>
 #include <stdbool.h>
 #include <locale.h>
+#include <limits.h>
 #include <errno.h>
 
 #include "config.h"

@@ -3,7 +3,7 @@
 
 typedef struct pnode_t {
 	Addr paddr;
-	Addr frame;
+	int frame;
 	bool bitres;
 	bool bitmod;
 	bool bitref;
@@ -23,12 +23,12 @@ typedef struct pagtab_t {
 Pagtab *iniTbl(void);
 List *iniLst(void);
 
-void execRG(Pagtab *table, Registro *registro);
+void execRG(Pagtab *table, Registro *registro, int *vmem);
 Pnode *schLst(List *list, Addr paddr);
+Pnode *pshLst(List *list, Addr paddr);
 void clrTbl(Pagtab *table);
 unsigned modHsh(Addr addr);
 
-void pshLst(List *list, Addr paddr);
 void clrLst(List *list);
 int lstnil(List *list);
 

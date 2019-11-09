@@ -7,6 +7,7 @@ Registro *iniRgtr(int naccess) {
 		exit(EXIT_FAILURE);
 	}
 
+	g_config.naccess  = naccess;
 	registro->naccess = naccess;
 	registro->alocmem = naccess * sizeof(Access);
 	registro->acesso  = malloc(registro->alocmem);

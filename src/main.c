@@ -21,8 +21,8 @@ int main(int argc, char **argv) {
 	int *vmem = iniMem();
 	appinfo();
 
-	execRG(table,registro);
-	prtTbl(table);
+	execRG(table,registro,vmem);
+	//prtTbl(table);
 	
 	#ifdef DEBUG
 	prtReg(registro);
