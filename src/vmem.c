@@ -132,6 +132,7 @@ void prtCLS(int class) {
 		printf("\u25CF\u25CF\u25CF3 ");
 		break;
 	default:
+		printf("WTF!");
 		break;
 	}
 }
