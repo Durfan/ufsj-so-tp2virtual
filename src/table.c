@@ -32,11 +32,13 @@ void execRG(Pagtab *table, Registro *registro) {
 	unsigned fault = 0;
 	unsigned count = 1;
 	float percent;
+	char btrw;
 
 	printf("\e[?25l");
 	for (unsigned i=0; i < registro->naccess; i++) {
-		percent = (count*100) / (g_config.filesiz/11);
+		percent = (count*100) / g_config.inlines;
 		addr  = registro->acesso[i].addr;
+		btrw  = registro->acesso[i].rw ;
 		addr  = getPaddr(addr);
 		paddr = modHsh(addr);
 		list  = table[paddr].lstaddr;
@@ -44,6 +46,8 @@ void execRG(Pagtab *table, Registro *registro) {
 
 		printf("  Processando Tabela: "CYELL);
 		if (pnode != NULL) {
+			pnode->bitref = true;
+			pnode->bitmod = btrw == 'W' ? true:false;
 			pnode->count++;
 			printf("[%03.0f%%] ", percent);
 			printf("%04d \u2192 %08X : ",paddr,addr);
@@ -53,6 +57,7 @@ void execRG(Pagtab *table, Registro *registro) {
 			printf("[%03.0f%%] ", percent);
 			printf("%04d \u2192 %08X : ",paddr,addr);
 		}
+
 		if (pnode->frame == -1) {
 			pnode->frame = getframe(table);
 			printf("%04d : %04d",pnode->frame,fault++);

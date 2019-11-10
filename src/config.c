@@ -66,6 +66,12 @@ unsigned valSize(unsigned val, unsigned min, unsigned max) {
 	return 0;
 }
 
-unsigned powrOf2(unsigned val) {
-	return val && !(val & (val - 1));
+// n e potencia de 2 ? sim:nao
+unsigned powrOf2(unsigned n) {
+	return n && !(n & (n - 1));
+}
+
+// round() math.h, mas sem a math.h
+int nofloat(double n) {
+	return (n >= 0) ? (int)(n + 0.5) : (int)(n - 0.5);
 }

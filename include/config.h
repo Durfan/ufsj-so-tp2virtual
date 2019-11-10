@@ -19,6 +19,7 @@ struct {
 	Subalg salg;
 	char *file;
 	unsigned filesiz;
+	unsigned inlines;
 	unsigned naccess;
 	unsigned pagsize;
 	unsigned memsize;
@@ -32,7 +33,8 @@ unsigned getdeslc(unsigned size);
 unsigned tablesze(unsigned pgdeslc, unsigned memsize);
 unsigned getPaddr(unsigned addr);
 unsigned valSize(unsigned val, unsigned min, unsigned max);
-unsigned powrOf2(unsigned val);
+unsigned powrOf2(unsigned n);
+int nofloat(double n);
 
 //#pragma message __FILE__
 #endif // INCLUDE_CONFIG_H

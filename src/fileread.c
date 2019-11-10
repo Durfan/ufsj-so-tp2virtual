@@ -34,9 +34,11 @@ Registro *readlog(void) {
 	g_config.filesiz = ftell(fp);
 	rewind(fp);
 
-	int i = 0, count = 1;
-	int lines = g_config.filesiz/11;
 	float percent;
+	int i = 0, count = 1;
+	int lines = nofloat((double)g_config.filesiz/11);
+	g_config.inlines = lines;
+	// nofloat: corrige entrada com linhas impares
 
 	Registro *registro = iniRgtr(lines);
 	Access *acesso = registro->acesso;
