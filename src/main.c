@@ -18,10 +18,9 @@ int main(int argc, char **argv) {
 		program_invocation_short_name,VERSION,TAG);
 	Registro *registro = readlog();
 	Pagtab *table = iniTbl();
-	int *vmem = iniMem();
 	appinfo();
 
-	execRG(table,registro,vmem);
+	execRG(table,registro);
 	//prtTbl(table);
 	
 	#ifdef DEBUG
@@ -32,7 +31,6 @@ int main(int argc, char **argv) {
 
 	clrReg(registro);
 	clrTbl(table);
-	free(vmem);
 	return EXIT_SUCCESS;
 }
 

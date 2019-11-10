@@ -23,7 +23,7 @@ typedef struct pagtab_t {
 Pagtab *iniTbl(void);
 List *iniLst(void);
 
-void execRG(Pagtab *table, Registro *registro, int *vmem);
+void execRG(Pagtab *table, Registro *registro);
 Pnode *schLst(List *list, Addr paddr);
 Pnode *pshLst(List *list, Addr paddr);
 void clrTbl(Pagtab *table);

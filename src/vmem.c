@@ -1,22 +1,16 @@
 #include "main.h"
 
-int *iniMem(void) {
-	int *vmem = calloc(g_config.frames,sizeof(int));
-	if (vmem == NULL) {
-		perror(program_invocation_short_name);
-		exit(EXIT_FAILURE);
-	}
-	return vmem;
-}
-
-int getframe(Pagtab *table, int *vmem) {
-	int frame = getfreeframe(vmem);
-	if (frame != -1)
+int getframe(Pagtab *table) {
+	int frame;
+	static unsigned mem;
+	if (mem < g_config.frames) {
+		frame = mem++;
 		return frame;
+	}
 
 	switch (g_config.salg) {
 	case lru:
-		frame = algLRU(table,vmem);
+		frame = algLRU(table);
 		break;
 
 	case nru:
@@ -28,31 +22,21 @@ int getframe(Pagtab *table, int *vmem) {
 		break;
 	
 	default:
-		break;
+		exit(EXIT_FAILURE);
 	}
 
 	return frame;
 }
 
-int getfreeframe(int *vmem) {
-	unsigned frames = g_config.frames;
-	for (unsigned i=0; i < frames; i++) {
-		if (vmem[i] == 0) {
-			vmem[i] = 1;
-			return i;
-		}
-	}
-	return -1;
-}
-
-int algLRU(Pagtab *table, int *vmem) {
-	unsigned frames = g_config.frames;
+int algLRU(Pagtab *table) {
+	static int age;
+	static int rst = 200;
 	int min = INT_MAX;
-	int frame,count;
+	int frame, count;
 	List *list;
 	Pnode *pnode,*fnode;
 
-	for (unsigned i=0; i < frames; i++) {
+	for (unsigned i=0; i < g_config.frames; i++) {
 		list = table[i].lstaddr;
 		pnode = list->head;
 		while (pnode != NULL) {
@@ -61,11 +45,17 @@ int algLRU(Pagtab *table, int *vmem) {
 				min = count;
 				fnode = pnode;
 			}
+			if (age == rst)
+				pnode->count = 0;
 			pnode = pnode->next;
 		}
 	}
 
 	frame = fnode->frame;
 	fnode->frame = -1;
+
+	if (age == rst) age = 0;
+	else age++;
+
 	return frame;
 }

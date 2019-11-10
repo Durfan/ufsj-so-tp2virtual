@@ -25,7 +25,7 @@ List *iniLst(void) {
 	return list;
 }
 
-void execRG(Pagtab *table, Registro *registro, int *vmem) {
+void execRG(Pagtab *table, Registro *registro) {
 	Addr addr,paddr;
 	List *list;
 	Pnode *pnode;
@@ -54,7 +54,7 @@ void execRG(Pagtab *table, Registro *registro, int *vmem) {
 			printf("%04d \u2192 %08X : ",paddr,addr);
 		}
 		if (pnode->frame == -1) {
-			pnode->frame = getframe(table,vmem);
+			pnode->frame = getframe(table);
 			printf("%04d : %04d",pnode->frame,fault++);
 		}
 		
