@@ -88,7 +88,7 @@ int algNRU(Pagtab *table) {
 		fnode = dqpopHead(cls23);
 
 	cls = clssNRU(fnode);
-	printf("Classe %d ", cls);
+	prtCLS(cls);
 	frame = fnode->frame;
 	fnode->frame = -1;
 
@@ -114,4 +114,24 @@ int clssNRU(Pnode *pnode) {
 		class = 3;
 	else class = -1;
 	return class;
+}
+
+void prtCLS(int class) {
+	printf("CLS");
+	switch (class) {
+	case 0:
+		printf("0\u25CF\u25CF\u25CF ");
+		break;
+	case 1:
+		printf("\u25CF1\u25CF\u25CF ");
+		break;
+	case 2:
+		printf("\u25CF\u25CF2\u25CF ");
+		break;
+	case 3:
+		printf("\u25CF\u25CF\u25CF3 ");
+		break;
+	default:
+		break;
+	}
 }
