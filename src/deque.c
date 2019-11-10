@@ -95,7 +95,8 @@ void dqprt(Deque *deque) {
 	DQnode *dqnode = deque->head;
 	printf(" S{%04d}:", deque->size);
 	while (dqnode != NULL) {
-		printf(" %08X", dqnode->pnode->paddr);
+		printf(" %04d:", dqnode->pnode->count);
+		printf("%08X",   dqnode->pnode->paddr);
 		dqnode = dqnode->next;
 	}
 	putchar(0x0A);

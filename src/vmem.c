@@ -29,10 +29,13 @@ int getframe(Pagtab *table) {
 }
 
 int algLRU(Pagtab *table) {
-	int min = INT_MAX;
+	static unsigned aging;
+	unsigned ciclo = 5;
+	int max = 0;
 	int frame, count;
 	List *list;
 	Pnode *pnode,*fnode;
+	Deque *lessref = dqcreate();
 
 	for (unsigned i=0; i < g_config.frames; i++) {
 		list = table[i].lstaddr;
@@ -40,16 +43,35 @@ int algLRU(Pagtab *table) {
 		while (pnode != NULL) {
 			count = pnode->count;
 			frame = pnode->frame;
-			if (count < min && frame != -1) {
-				min = count;
-				fnode = pnode;
-			}
+			if (frame != -1)
+				dqpshHead(lessref,pnode);
+			if (count > max)
+				max = count;
+			if (aging == ciclo && count > 0)
+				pnode->count--;
 			pnode = pnode->next;
 		}
 	}
 
+	DQnode *dqnode = lessref->head;
+	while (dqnode != NULL) {
+		count = dqnode->pnode->count;
+		if (count < max) {
+			max = count;
+			fnode = dqnode->pnode;
+		}
+		dqnode = dqnode->next;
+	}
+
 	frame = fnode->frame;
 	fnode->frame = -1;
+
+	if (aging == ciclo)
+		aging = 0;
+	else
+		aging++;
+
+	dqclr(lessref);
 	return frame;
 }
 
