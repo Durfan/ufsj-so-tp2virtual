@@ -21,12 +21,11 @@ int main(int argc, char **argv) {
 	appinfo();
 
 	execRG(table,registro);
-	//prtTbl(table);
 	
 	#ifdef DEBUG
-	prtReg(registro);
+	prtTbl(table);
 	printf("Deslocamento p: %d\n", g_config.pgdeslc);
-	printf("Memoria usada: %ld Kib\n", registro->alocmem / 128);
+	printf("Memoria usada: %d Kib\n", registro->alocmem / 128);
 	#endif
 
 	clrReg(registro);
