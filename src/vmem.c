@@ -29,8 +29,6 @@ int getframe(Pagtab *table) {
 }
 
 int algLRU(Pagtab *table) {
-	static int age;
-	static int rst = 200;
 	int min = INT_MAX;
 	int frame, count;
 	List *list;
@@ -45,17 +43,11 @@ int algLRU(Pagtab *table) {
 				min = count;
 				fnode = pnode;
 			}
-			if (age == rst)
-				pnode->count = 0;
 			pnode = pnode->next;
 		}
 	}
 
 	frame = fnode->frame;
 	fnode->frame = -1;
-
-	if (age == rst) age = 0;
-	else age++;
-
 	return frame;
 }
