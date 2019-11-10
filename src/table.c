@@ -45,22 +45,22 @@ void execRG(Pagtab *table, Registro *registro) {
 		pnode = schLst(list,addr);
 
 		printf("  Processando Tabela: "CYELL);
+		printf("[%03.0f%%] ", percent);
 		if (pnode != NULL) {
 			pnode->bitref = true;
 			pnode->bitmod = btrw == 'W' ? true:false;
 			pnode->count++;
-			printf("[%03.0f%%] ", percent);
 			printf("%04d \u2192 %08X : ",paddr,addr);
 		}
 		else {
+			fault++;
 			pnode = pshLst(list,addr);
-			printf("[%03.0f%%] ", percent);
 			printf("%04d \u2192 %08X : ",paddr,addr);
 		}
 
 		if (pnode->frame == -1) {
 			pnode->frame = getframe(table);
-			printf("%04d : %04d",pnode->frame,fault++);
+			printf("F%04d PF%d",pnode->frame,fault++);
 		}
 		
 		printf("\r"CRSET);

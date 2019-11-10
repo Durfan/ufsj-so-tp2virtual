@@ -39,7 +39,8 @@ int algLRU(Pagtab *table) {
 		pnode = list->head;
 		while (pnode != NULL) {
 			count = pnode->count;
-			if (count < min && pnode->frame != -1) {
+			frame = pnode->frame;
+			if (count < min && frame != -1) {
 				min = count;
 				fnode = pnode;
 			}
@@ -55,52 +56,39 @@ int algLRU(Pagtab *table) {
 int algNRU(Pagtab *table) {
 	static unsigned ciclo;
 	unsigned reset = 20;
-	int frame,class;
+	int frame, cls;
 	List *list;
 	Pnode *pnode,*fnode;
-	bool getfrm = false;
+	Deque *cls01 = dqcreate();
+	Deque *cls23 = dqcreate();
 	
 	for (unsigned i=0; i < g_config.frames; i++) {
 		list = table[i].lstaddr;
 		pnode = list->head;
 		while (pnode != NULL) {
+			frame = pnode->frame;
 			if (ciclo == reset)
 				pnode->bitref = false;
-
-			class = clssNRU(pnode);
-			if (!getfrm && pnode->frame != -1) {
-				switch (class) {
-				case 0:
-					getfrm = true;
-					fnode = pnode;
-					break;
-
-				case 1:
-					getfrm = true;
-					fnode = pnode;
-					break;
-
-				case 2:
-					getfrm = true;
-					fnode = pnode;
-					break;
-
-				case 3:
-					getfrm = true;
-					fnode = pnode;
-					break;
-
-				default:
-					exit(EXIT_FAILURE);
-				}
-				
-			}
+			cls = clssNRU(pnode);
+			if (cls == 0 && frame != -1)
+				dqpshHead(cls01,pnode);
+			else if (cls == 1 && frame != -1) 
+				dqpshTail(cls01,pnode);
+			else if (cls == 2 && frame != -1)
+				dqpshHead(cls23,pnode);
+			else if (cls == 3 && frame != -1)
+				dqpshTail(cls23,pnode);
 			pnode = pnode->next;
 		}
 	}
 
-	class = clssNRU(fnode);
-	printf("Classe %d ", class);
+	if (dqEmpty(cls01) == 0)
+		fnode = dqpopHead(cls01);
+	else
+		fnode = dqpopHead(cls23);
+
+	cls = clssNRU(fnode);
+	printf("Classe %d ", cls);
 	frame = fnode->frame;
 	fnode->frame = -1;
 
@@ -109,6 +97,8 @@ int algNRU(Pagtab *table) {
 	else
 		ciclo++;
 
+	dqclr(cls01);
+	dqclr(cls23);
 	return frame;
 }
 
@@ -116,11 +106,11 @@ int clssNRU(Pnode *pnode) {
 	int class;
 	if (!pnode->bitref && !pnode->bitmod)
 		class = 0;
-	else if (!pnode->bitref &&  pnode->bitmod)
+	else if (!pnode->bitref && pnode->bitmod)
 		class = 1;
 	else if (pnode->bitref && !pnode->bitmod)
 		class = 2;
-	else if (pnode->bitref &&  pnode->bitmod)
+	else if (pnode->bitref && pnode->bitmod)
 		class = 3;
 	else class = -1;
 	return class;

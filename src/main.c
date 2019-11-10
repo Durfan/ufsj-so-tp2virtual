@@ -28,8 +28,8 @@ int main(int argc, char **argv) {
 	printf("Memoria usada: %d Kib\n", registro->alocmem / 128);
 	#endif
 
-	//clrReg(registro);
-	//clrTbl(table);
+	clrReg(registro);
+	clrTbl(table);
 	return EXIT_SUCCESS;
 }
 
