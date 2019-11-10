@@ -31,9 +31,11 @@ void execRG(Pagtab *table, Registro *registro) {
 	Pnode *pnode;
 	unsigned fault = 0;
 	unsigned count = 1;
+	unsigned noinlist;
 	float percent;
 	char btrw;
-
+	Deque *deque = dqcreate();
+	DQnode *dqnode;
 	printf("\e[?25l");
 	for (unsigned i=0; i < registro->naccess; i++) {
 		percent = (count*100) / g_config.inlines;
@@ -58,14 +60,28 @@ void execRG(Pagtab *table, Registro *registro) {
 			printf("%04d \u2192 %08X : ",paddr,addr);
 		}
 
+
 		if (pnode->frame == -1) {
-			pnode->frame = getframe(table);
+			pnode->frame = getframe(table, deque);
 			printf("F%04d PF%d",pnode->frame,fault++);
+			if(g_config.salg == segunda_chance){
+			dqnode = deque->head;
+			noinlist = 1;
+			while(dqnode && noinlist == 1){
+				if(dqnode->pnode == pnode)
+					noinlist = 0;
+				dqnode = dqnode->next;
+			}
+
+			if(noinlist)
+				dqpshTail(deque, pnode);
+			}
 		}
 		
 		printf("\r"CRSET);
 		count++;
 	}
+	dqclr(deque);
 	printf("\33[2K\r\e[?25h");
 	printf("     Falta de Pagina: %d\n",fault);
 }

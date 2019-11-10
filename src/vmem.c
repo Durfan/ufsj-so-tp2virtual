@@ -1,6 +1,6 @@
 #include "main.h"
 
-int getframe(Pagtab *table) {
+int getframe(Pagtab *table, Deque *deque) {
 	int frame;
 	static unsigned mem;
 	if (mem < g_config.frames) {
@@ -18,13 +18,12 @@ int getframe(Pagtab *table) {
 		break;
 
 	case segunda_chance:
-		/* code */
+		frame = algSC(deque);
 		break;
 	
 	default:
 		exit(EXIT_FAILURE);
 	}
-
 	return frame;
 }
 
@@ -132,7 +131,38 @@ void prtCLS(int class) {
 		printf("\u25CF\u25CF\u25CF3 ");
 		break;
 	default:
-		printf("WTF! ");
 		break;
 	}
+}
+
+
+int algSC(Deque *deque) {
+    DQnode *dqnode = deque->head;
+	Pnode *node;
+	int frame;
+	int control = 0;
+	if(deque->head == NULL)
+		printf("falha total\n");
+    while(dqnode!=NULL && control == 0){
+        if(dqnode->pnode->bitref == 1){
+			node = dqnode->pnode;
+			dqpopHead(deque);
+			dqpshTail(deque, node);
+			deque->tail->pnode->bitref = 0;
+			dqnode = deque->head;
+        }
+        else if(dqnode->pnode->bitref == 0){
+			frame = dqnode->pnode->frame;
+			dqnode->pnode->frame = -1;
+			dqpopHead(deque);
+			control = 1;
+		}
+		else if(dqnode == deque->tail){
+			frame = deque->head->pnode->frame;
+			deque->head->pnode->frame = -1;
+			dqpopHead(deque);
+		}			
+        dqnode = dqnode->next;
+    }
+    return frame;
 }
