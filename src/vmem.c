@@ -1,7 +1,7 @@
 #include "main.h"
 
-int getframe(Pagtab *table, Deque *deque) {
-	int frame;
+int getframe(Pagtab *table) {
+	int frame = -1;
 	static unsigned mem;
 	if (mem < g_config.frames) {
 		frame = mem++;
@@ -12,15 +12,12 @@ int getframe(Pagtab *table, Deque *deque) {
 	case lru:
 		frame = algLRU(table);
 		break;
-
 	case nru:
 		frame = algNRU(table);
 		break;
-
 	case segunda_chance:
-		frame = algSC(deque);
+		frame = algSEC(table);
 		break;
-	
 	default:
 		exit(EXIT_FAILURE);
 	}
@@ -28,7 +25,7 @@ int getframe(Pagtab *table, Deque *deque) {
 }
 
 int algLRU(Pagtab *table) {
-	int min = INT_MAX;
+	int min = 0x0FF;
 	int frame, count;
 	List *list;
 	Pnode *pnode,*fnode;
@@ -39,13 +36,17 @@ int algLRU(Pagtab *table) {
 		while (pnode != NULL) {
 			count = pnode->count;
 			frame = pnode->frame;
-			if (count < min && frame != -1) {
+			if (count <= min && frame != -1) {
 				min = count;
 				fnode = pnode;
 			}
 			pnode = pnode->next;
 		}
 	}
+
+	#ifdef DEBUG
+	printf("C%03d ",fnode->count);
+	#endif
 
 	frame = fnode->frame;
 	fnode->frame = -1;
@@ -54,7 +55,7 @@ int algLRU(Pagtab *table) {
 
 int algNRU(Pagtab *table) {
 	static unsigned ciclo;
-	unsigned reset = 20;
+	unsigned reset = 127;
 	int frame, cls;
 	List *list;
 	Pnode *pnode,*fnode;
@@ -90,7 +91,6 @@ int algNRU(Pagtab *table) {
 	prtCLS(cls);
 	frame = fnode->frame;
 	fnode->frame = -1;
-
 	if (ciclo == reset)
 		ciclo = 0;
 	else
@@ -98,6 +98,52 @@ int algNRU(Pagtab *table) {
 
 	dqclr(cls01);
 	dqclr(cls23);
+	return frame;
+}
+
+int algSEC(Pagtab *table) {
+	int frame;
+	unsigned last;
+	int lastcoor;
+	List *list;
+	Pnode *pnode;
+	Pnode **segch = malloc(g_config.frames * sizeof(Pnode*));
+
+	for (unsigned i=0; i < g_config.frames; i++) {
+		list = table[i].lstaddr;
+		pnode = list->head;
+		while (pnode != NULL) {
+			frame = pnode->frame;
+			if (frame != -1)
+				segch[frame] = pnode;
+			pnode = pnode->next;
+		}
+	}
+
+
+	for(unsigned i=0; i < g_config.frames; i++){
+		last = segch[i]->count;
+		lastcoor = 0;
+		//printf("%03d:%08X ", segch[i]->count,segch[i]->paddr);
+		for (unsigned j=1; j < g_config.frames; j++) {
+			if(segch[j]->count >  last){
+				last = segch[j]->count;
+				lastcoor = j;
+			}
+		}
+		if(segch[lastcoor]->bitref == 1){
+			segch[lastcoor]->bitref = 0;
+			segch[lastcoor]->count = 0;
+			i = 0;
+		}
+		else {
+			frame = segch[lastcoor]->frame;
+			segch[lastcoor]->frame = -1;
+			i = g_config.frames;
+		}
+	}
+
+	free(segch);
 	return frame;
 }
 
@@ -131,38 +177,7 @@ void prtCLS(int class) {
 		printf("\u25CF\u25CF\u25CF3 ");
 		break;
 	default:
+		printf("WTF! ");
 		break;
 	}
-}
-
-
-int algSC(Deque *deque) {
-    DQnode *dqnode = deque->head;
-	Pnode *node;
-	int frame;
-	int control = 0;
-	if(deque->head == NULL)
-		printf("falha total\n");
-    while(dqnode!=NULL && control == 0){
-        if(dqnode->pnode->bitref == 1){
-			node = dqnode->pnode;
-			dqpopHead(deque);
-			dqpshTail(deque, node);
-			deque->tail->pnode->bitref = 0;
-			dqnode = deque->head;
-        }
-        else if(dqnode->pnode->bitref == 0){
-			frame = dqnode->pnode->frame;
-			dqnode->pnode->frame = -1;
-			dqpopHead(deque);
-			control = 1;
-		}
-		else if(dqnode == deque->tail){
-			frame = deque->head->pnode->frame;
-			deque->head->pnode->frame = -1;
-			dqpopHead(deque);
-		}			
-        dqnode = dqnode->next;
-    }
-    return frame;
 }

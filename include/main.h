@@ -4,7 +4,7 @@
 #define _GNU_SOURCE
 extern char *program_invocation_name;
 extern char *program_invocation_short_name;
-#define VERSION "0.4.4"
+#define VERSION "0.4.5"
 #define TAG "alpha"
 
 #define CRED  "\x1b[31m"
@@ -16,7 +16,6 @@ extern char *program_invocation_short_name;
 #include <string.h>
 #include <stdbool.h>
 #include <locale.h>
-#include <limits.h>
 #include <errno.h>
 
 #include "config.h"
