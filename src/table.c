@@ -47,13 +47,10 @@ void execRG(Pagtab *table, Registro *registro) {
 		printf("  Processando Tabela: "CYELL);
 		printf("[%03.0f%%] ", percent);
 		if (pnode != NULL) {
-			pnode->bitref = true;
 			pnode->bitmod = btrw == 'W' ? true:false;
-			pnode->count++;
 			printf("%04d \u2192 %08X : ",paddr,addr);
 		}
 		else {
-			fault++;
 			pnode = pshLst(list,addr);
 			printf("%04d \u2192 %08X : ",paddr,addr);
 		}
@@ -73,12 +70,20 @@ void execRG(Pagtab *table, Registro *registro) {
 Pnode *schLst(List *list, Addr paddr) {
 	if (lstnil(list))
 		return NULL;
+	Pnode *pnode = NULL;
 	Pnode *ptr = list->head;
 	while (ptr != NULL) {
-		if (ptr->paddr == paddr)
-			return ptr;
+		ptr->count >>= 1;
+		if (ptr->paddr == paddr) {
+			ptr->count += 0x080;
+			ptr->bitref = true;
+			pnode = ptr;
+		}
 		ptr = ptr->next;
 	}
+
+	if (pnode)
+		return pnode;
 	return NULL;
 }
 

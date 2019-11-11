@@ -1,7 +1,7 @@
 #include "main.h"
 
 int getframe(Pagtab *table) {
-	int frame;
+	int frame = -1;
 	static unsigned mem;
 	if (mem < g_config.frames) {
 		frame = mem++;
@@ -12,30 +12,23 @@ int getframe(Pagtab *table) {
 	case lru:
 		frame = algLRU(table);
 		break;
-
 	case nru:
 		frame = algNRU(table);
 		break;
-
 	case segunda_chance:
-		/* code */
+		frame = algSEC(table);
 		break;
-	
 	default:
 		exit(EXIT_FAILURE);
 	}
-
 	return frame;
 }
 
 int algLRU(Pagtab *table) {
-	static unsigned aging;
-	unsigned ciclo = 5;
-	int max = 0;
+	int min = 0x0FF;
 	int frame, count;
 	List *list;
 	Pnode *pnode,*fnode;
-	Deque *lessref = dqcreate();
 
 	for (unsigned i=0; i < g_config.frames; i++) {
 		list = table[i].lstaddr;
@@ -43,41 +36,26 @@ int algLRU(Pagtab *table) {
 		while (pnode != NULL) {
 			count = pnode->count;
 			frame = pnode->frame;
-			if (frame != -1)
-				dqpshHead(lessref,pnode);
-			if (count > max)
-				max = count;
-			if (aging == ciclo && count > 0)
-				pnode->count--;
+			if (count <= min && frame != -1) {
+				min = count;
+				fnode = pnode;
+			}
 			pnode = pnode->next;
 		}
 	}
 
-	DQnode *dqnode = lessref->head;
-	while (dqnode != NULL) {
-		count = dqnode->pnode->count;
-		if (count < max) {
-			max = count;
-			fnode = dqnode->pnode;
-		}
-		dqnode = dqnode->next;
-	}
+	#ifdef DEBUG
+	printf("C%03d ",fnode->count);
+	#endif
 
 	frame = fnode->frame;
 	fnode->frame = -1;
-
-	if (aging == ciclo)
-		aging = 0;
-	else
-		aging++;
-
-	dqclr(lessref);
 	return frame;
 }
 
 int algNRU(Pagtab *table) {
 	static unsigned ciclo;
-	unsigned reset = 20;
+	unsigned reset = 127;
 	int frame, cls;
 	List *list;
 	Pnode *pnode,*fnode;
@@ -113,7 +91,6 @@ int algNRU(Pagtab *table) {
 	prtCLS(cls);
 	frame = fnode->frame;
 	fnode->frame = -1;
-
 	if (ciclo == reset)
 		ciclo = 0;
 	else
@@ -122,6 +99,32 @@ int algNRU(Pagtab *table) {
 	dqclr(cls01);
 	dqclr(cls23);
 	return frame;
+}
+
+int algSEC(Pagtab *table) {
+	int frame,count;
+	List *list;
+	Pnode *pnode;
+	Pnode **segch = malloc(g_config.frames * sizeof(Pnode*));
+
+	for (unsigned i=0; i < g_config.frames; i++) {
+		list = table[i].lstaddr;
+		pnode = list->head;
+		while (pnode != NULL) {
+			frame = pnode->frame;
+			count = pnode->count;
+			if (frame != -1)
+				segch[frame] = pnode;
+			pnode = pnode->next;
+		}
+	}
+
+	for (unsigned i=0; i < g_config.frames; i++) {
+		printf("%03d:%08X ", segch[i]->count,segch[i]->paddr);
+	}
+
+	free(segch);
+	return 0;
 }
 
 int clssNRU(Pnode *pnode) {

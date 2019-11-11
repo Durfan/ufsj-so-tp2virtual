@@ -18,7 +18,7 @@ int main(int argc, char **argv) {
 
 	setCfg(argv);
 	system("clear");
-	printf(CYELL"%s [%s %s]\n"CRSET,
+	printf(CYELL"%s [%s %s]"CRSET"\n",
 		program_invocation_short_name,VERSION,TAG);
 	Registro *registro = readlog();
 	Pagtab *table = iniTbl();

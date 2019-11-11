@@ -4,6 +4,7 @@
 int getframe(Pagtab *table);
 int algLRU(Pagtab *table);
 int algNRU(Pagtab *table);
+int algSEC(Pagtab *table);
 int clssNRU(Pnode *pnode);
 void prtCLS(int class);
 
