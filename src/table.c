@@ -59,6 +59,8 @@ void execRG(Pagtab *table, Registro *registro) {
 			pnode->frame = getframe(table);
 			printf("F%04d PF%d",pnode->frame,fault++);
 		}
+		else
+			pnode->count >>= 1;
 		
 		printf("\r"CRSET);
 		count++;
@@ -73,7 +75,6 @@ Pnode *schLst(List *list, Addr paddr) {
 	Pnode *pnode = NULL;
 	Pnode *ptr = list->head;
 	while (ptr != NULL) {
-		ptr->count >>= 1;
 		if (ptr->paddr == paddr) {
 			ptr->count += 0x080;
 			ptr->bitref = true;

@@ -40,13 +40,10 @@ int algLRU(Pagtab *table) {
 				min = count;
 				fnode = pnode;
 			}
+			pnode->count >>= 1;
 			pnode = pnode->next;
 		}
 	}
-
-	#ifdef DEBUG
-	printf("C%03d ",fnode->count);
-	#endif
 
 	frame = fnode->frame;
 	fnode->frame = -1;
@@ -55,7 +52,7 @@ int algLRU(Pagtab *table) {
 
 int algNRU(Pagtab *table) {
 	static unsigned ciclo;
-	unsigned reset = 127;
+	unsigned reset = 0x03F;
 	int frame, cls;
 	List *list;
 	Pnode *pnode,*fnode;
