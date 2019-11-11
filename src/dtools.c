@@ -30,3 +30,7 @@ void prtTbl(Pagtab *table) {
 	}
 	putchar(0x0A);
 }
+
+void prtAlert(void) {
+	printf(CRED" FALHA "CRSET);
+}

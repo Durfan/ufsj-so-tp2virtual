@@ -40,6 +40,8 @@ int algLRU(Pagtab *table) {
 				min = count;
 				fnode = pnode;
 			}
+			if (pnode->count > 0x0FF)
+				prtAlert();
 			pnode->count >>= 1;
 			pnode = pnode->next;
 		}
