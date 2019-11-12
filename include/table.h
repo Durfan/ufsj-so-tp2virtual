@@ -24,6 +24,7 @@ Pagtab *iniTbl(void);
 List *iniLst(void);
 
 void execRG(Pagtab *table, Registro *registro);
+int tblSze(Pagtab *table);
 Pnode *schLst(List *list, Addr paddr);
 Pnode *pshLst(List *list, Addr paddr);
 void clrTbl(Pagtab *table);

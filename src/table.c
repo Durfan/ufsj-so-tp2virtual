@@ -29,7 +29,7 @@ void execRG(Pagtab *table, Registro *registro) {
 	Addr addr,paddr;
 	List *list;
 	Pnode *pnode;
-	unsigned fault = 0;
+	unsigned hit = 0, fault = 0;
 	unsigned count = 1;
 	float percent;
 	char btrw;
@@ -59,14 +59,27 @@ void execRG(Pagtab *table, Registro *registro) {
 			pnode->frame = getframe(table);
 			printf("F%04d PF%d",pnode->frame,fault++);
 		}
-		else
+		else {
+			hit++;
 			pnode->count >>= 1;
+		}
 		
 		printf("\r"CRSET);
 		count++;
 	}
 	printf("\33[2K\r\e[?25h");
+	printf("       Hit de Pagina: %d\n",hit);
 	printf("     Falta de Pagina: %d\n",fault);
+}
+
+int tblSze(Pagtab *table) {
+	int size = 0;
+	List *list;
+	for (unsigned i=0; i < g_config.frames; i++) {
+		list = table[i].lstaddr;
+		size += list->size;
+	}
+	return size;
 }
 
 Pnode *schLst(List *list, Addr paddr) {

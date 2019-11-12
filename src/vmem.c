@@ -101,7 +101,9 @@ int algNRU(Pagtab *table) {
 }
 
 int algSEC(Pagtab *table) {
-	int frame,count;
+	int frame,secch,first,last;
+	unsigned max = 0;
+	unsigned min = __INT32_MAX__;
 	List *list;
 	Pnode *pnode;
 	Pnode **segch = malloc(g_config.frames * sizeof(Pnode*));
@@ -111,19 +113,30 @@ int algSEC(Pagtab *table) {
 		pnode = list->head;
 		while (pnode != NULL) {
 			frame = pnode->frame;
-			count = pnode->count;
-			if (frame != -1)
+			if (frame != -1) {
 				segch[frame] = pnode;
+				if (segch[frame]->count >= max) {
+					max = segch[frame]->count;
+					last = frame;
+				}
+				if (segch[frame]->count <= min) {
+					min = segch[frame]->count;
+					first = frame;
+				}
+			}
+			pnode->count >>= 1;
 			pnode = pnode->next;
 		}
 	}
 
-	for (unsigned i=0; i < g_config.frames; i++) {
-		printf("%03d:%08X ", segch[i]->count,segch[i]->paddr);
-	}
+	frame = segch[first]->frame;
+	secch  = segch[last]->frame;
+	segch[last]->frame = frame;
+	segch[last]->count = 0;
+	segch[first]->frame = -1;
 
 	free(segch);
-	return 0;
+	return secch;
 }
 
 int clssNRU(Pnode *pnode) {
