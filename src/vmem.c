@@ -100,7 +100,7 @@ int algNRU(Pagtab *table) {
 	return frame;
 }
 
-int algSEC(Pagtab *table) {
+int algSEC(Pagtab *table) { // crap
 	int frame,secch,first,last;
 	unsigned max = 0;
 	unsigned min = __INT32_MAX__;
